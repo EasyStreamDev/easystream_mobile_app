@@ -14,7 +14,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async {
+        return false;
+      },
       child: MaterialApp(
         theme: ThemeData(
           primarySwatch: buildMaterialColor(MyColor().myOrange),

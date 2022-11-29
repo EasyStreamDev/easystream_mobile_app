@@ -3,14 +3,14 @@ import 'package:eip_test/Elements/SideBar/navigation_drawer.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class EventPage extends StatefulWidget {
+  const EventPage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => HomePageState();
+  State<EventPage> createState() => EventPageState();
 }
 
-class HomePageState extends State<HomePage> {
+class EventPageState extends State<EventPage> {
   final GlobalKey<ScaffoldState> drawerScaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -21,7 +21,7 @@ class HomePageState extends State<HomePage> {
       },
       child: Scaffold(
         backgroundColor: MyColor().myGrey,
-        appBar: MyAppBar(title: "Home Page", drawerScaffoldKey: drawerScaffoldKey),
+        appBar: MyAppBar(title: "Event Page", drawerScaffoldKey: drawerScaffoldKey),
         body: Scaffold(
           backgroundColor: MyColor().myGrey,
           key: drawerScaffoldKey,

@@ -1,6 +1,7 @@
 import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'package:eip_test/main.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -10,7 +11,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -30,12 +30,14 @@ class LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.only(top: 60.0, bottom: 60.0),
                 child: Center(
                   child: Container(
-                    decoration: BoxDecoration(
-                        color: MyColor().myOrange, borderRadius: BorderRadius.circular(10)),
-                    width: 200,
-                    height: 100,
-                    child: Image.asset('assets/images/logo_easystream_orange.png',)
-                  ),
+                      decoration: BoxDecoration(
+                          color: MyColor().myOrange,
+                          borderRadius: BorderRadius.circular(10)),
+                      width: 200,
+                      height: 100,
+                      child: Image.asset(
+                        'assets/images/logo_easystream_orange.png',
+                      )),
                 ),
               ),
               Padding(
@@ -45,17 +47,18 @@ class LoginPageState extends State<LoginPage> {
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(color:  MyColor().myOrange),
+                      borderSide: BorderSide(color: MyColor().myOrange),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 2, color: MyColor().myOrange),
+                      borderSide:
+                          BorderSide(width: 2, color: MyColor().myOrange),
                     ),
                     labelText: 'Email',
                     labelStyle: const TextStyle(color: Colors.white),
                   ),
                 ),
               ),
-               Padding(
+              Padding(
                 padding: const EdgeInsets.only(
                     left: 15.0, right: 15.0, top: 15, bottom: 0),
                 //padding: EdgeInsets.symmetric(horizontal: 15),
@@ -67,7 +70,8 @@ class LoginPageState extends State<LoginPage> {
                       borderSide: BorderSide(color: MyColor().myOrange),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 2, color:  MyColor().myOrange),
+                      borderSide:
+                          BorderSide(width: 2, color: MyColor().myOrange),
                     ),
                     labelText: 'Password',
                     labelStyle: const TextStyle(color: Colors.white),
@@ -75,7 +79,7 @@ class LoginPageState extends State<LoginPage> {
                 ),
               ),
               TextButton(
-                onPressed: (){
+                onPressed: () {
                   //TODO FORGOT PASSWORD SCREEN GOES HERE
                 },
                 child: const Text(
@@ -87,11 +91,12 @@ class LoginPageState extends State<LoginPage> {
                 height: 50,
                 width: 250,
                 decoration: BoxDecoration(
-                    color: MyColor().myOrange, borderRadius: BorderRadius.circular(20)),
+                    color: MyColor().myOrange,
+                    borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
-                        context, MaterialPageRoute(builder: (_) => const HomePage()));
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (_) => const HomePage()));
                   },
                   child: const Text(
                     'Login',
@@ -103,8 +108,17 @@ class LoginPageState extends State<LoginPage> {
                 height: 130,
               ),
               const Text(
-                  'New User? Create Account',
+                'New User? Create Account',
+                style: TextStyle(color: Colors.white, fontSize: 15),
+              ),
+              TextButton(
+                onPressed: () {
+                  createTcpClient();
+                },
+                child: const Text(
+                  'Create tcp client and connect to server',
                   style: TextStyle(color: Colors.white, fontSize: 15),
+                ),
               )
             ],
           ),

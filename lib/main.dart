@@ -1,15 +1,25 @@
 import 'package:eip_test/Pages/login.dart';
 import 'package:eip_test/Tools/color_tool.dart';
 import 'package:flutter/material.dart';
+import 'Client/Client.dart';
 
 import 'Styles/color.dart';
 
+Client tcpClient = new Client();
+
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
+}
+
+void createTcpClient() async {
+  tcpClient.initialize("192.168.0.7", 47920).then((value) {
+    tcpClient.launchClient();
+  });
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+  // final Client _client = new Client();
 
   @override
   Widget build(BuildContext context) {

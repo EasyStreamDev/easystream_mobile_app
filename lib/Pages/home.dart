@@ -33,7 +33,7 @@ String getText() {
       debugPrint("Key : ${key} and value is ${value.runtimeType.toString()}");
     });
     // debugPrint(requestResult.forEach((key, value) { }))
-    List<dynamic> mics = requestResult["mics"];
+    List<dynamic> mics = requestResult["data"]["mics"];
     mics.forEach((element) {
       Map<String, dynamic> tmp = element;
       debugPrint("tyyyyyyyyyyyyyyyype: ${tmp["micName"]}");
@@ -43,6 +43,17 @@ String getText() {
   // Text result = new Text(textValue);
   return (textValue);
 }
+
+// {
+//    {mics: [List],}
+// }
+//
+//
+//
+//
+//
+
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -70,61 +81,61 @@ class HomePageState extends State<HomePage> {
         backgroundColor: MyColor().myGrey,
         appBar:
             MyAppBar(title: "Home Page", drawerScaffoldKey: drawerScaffoldKey),
-        // body: Scaffold(
-        //   backgroundColor: MyColor().myGrey,
-        //   key: drawerScaffoldKey,
-        //   drawer: const NavigationDrawerWidget(),
-        // ),
-        body: SingleChildScrollView(
-            child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 60.0, bottom: 60.0),
-              child: Center(
-                child: Container(
-                    decoration: BoxDecoration(
-                        color: MyColor().myOrange,
-                        borderRadius: BorderRadius.circular(10)),
-                    width: 200,
-                    height: 100,
-                    child: Image.asset(
-                      'assets/images/logo_easystream_orange.png',
-                    )),
-              ),
-            ),
-            Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: MyColor().myOrange),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 2, color: MyColor().myOrange),
-                  ),
-                  labelText: 'Email',
-                  labelStyle: const TextStyle(color: Colors.white),
+        body: Scaffold(
+          backgroundColor: MyColor().myGrey,
+          key: drawerScaffoldKey,
+          drawer: const NavigationDrawerWidget(),
+          body: SingleChildScrollView(
+              child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 60.0, bottom: 60.0),
+                child: Center(
+                  child: Container(
+                      decoration: BoxDecoration(
+                          color: MyColor().myOrange,
+                          borderRadius: BorderRadius.circular(10)),
+                      width: 200,
+                      height: 100,
+                      child: Image.asset(
+                        'assets/images/logo_easystream_orange.png',
+                      )),
                 ),
               ),
-            ),
-            DropdownButton(
-                items: _menuItems,
-                value: _menuItems[0].value,
-                style: TextStyle(color: Colors.red),
-                onChanged: ((String? value) async => {
-                      if (value!.contains("getAllMics")) {await getAllMics()},
-                      setState(
-                        () => {_response = getText()},
-                      )
-                    })),
-            Text(
-              _response,
-              style: TextStyle(color: Colors.white),
-            ),
-          ],
-        )),
+              Padding(
+                //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: TextField(
+                  style: const TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: MyColor().myOrange),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 2, color: MyColor().myOrange),
+                    ),
+                    labelText: 'Email',
+                    labelStyle: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              DropdownButton(
+                  items: _menuItems,
+                  value: _menuItems[0].value,
+                  style: TextStyle(color: Colors.red),
+                  onChanged: ((String? value) async => {
+                        if (value!.contains("getAllMics")) {await getAllMics()},
+                        setState(
+                          () => {_response = getText()},
+                        )
+                      })),
+              Text(
+                _response,
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          )),
+        ),
       ),
     );
   }

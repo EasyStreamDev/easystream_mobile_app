@@ -13,7 +13,7 @@ void main() {
 
 void createTcpClient() async {
   tcpClient.initialize("192.168.0.7", 47920).then((value) {
-    tcpClient.launchClient();
+    tcpClient.startClient();
   });
 }
 

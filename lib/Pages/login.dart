@@ -114,6 +114,8 @@ class LoginPageState extends State<LoginPage> {
               TextButton(
                 onPressed: () {
                   createTcpClient();
+                  Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (_) => const HomePage()));
                 },
                 child: const Text(
                   'Create tcp client and connect to server',

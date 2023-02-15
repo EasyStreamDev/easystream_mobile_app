@@ -17,13 +17,15 @@ class Client {
   late int _port;
   late TcpClient _client;
   List<Map<String, dynamic>> _msg = [];
+  List<String> _responses = [];
   String _tmpMesssage = "";
+  bool _firstMessage = false;
   // late Stream<String> _listener;
 
   Future<void> initialize(String ip, int port) async {
-    _socket = await Socket.connect(ip, port);
+    // _socket = await Socket.connect(ip, port);
     // TcpClient.debug = true;
-    // _client = await TcpClient.connect(ip, port);
+    _client = await TcpClient.connect(ip, port);
     // _socketConnection = TcpSocketConnection(ip, port);
     // _listener = utf8.decoder.bind(_socket);
     // _socket.listen((List<int> event) {
@@ -37,19 +39,24 @@ class Client {
 
   void sendMessage(Map<String, dynamic> msg) {
     String toSend = JsonEncoder().convert(msg).trim();
-    _socket.write(toSend);
+    // _socket.write(toSend);
+    _client.write(toSend);
   }
 
   void startClient() async {
-    // _client.connectionStream.listen((event) {
-    //   debugPrint("[TCP CLIENT]: NEW MESSAGE (${event})");
-    // });
+    _client.connectionStream.listen((event) {
+      debugPrint("[TCP CLIENT]: NEW MESSAGE (${event})");
+    });
 
-    // _client.stringStream.listen((event) {
-    //   Map<String, dynamic> test = {"command": "getAllMics"};
-    //   sendMessage(test);
-    //   debugPrint("[TCP CLIENT]: NEW MESSAGE (${event})");
-    // });
+    _client.stringStream.listen((event) {
+      // Map<String, dynamic> test = {"command": "getAllMics"};
+      // sendMessage(test);
+      if (!event.contains("connected")) {
+        _msg.add(jsonDecode(event));
+        debugPrint("adding message");
+      }
+      debugPrint("[TCP CLIENT]: NEW MESSAGE (${event})");
+    });
     // _socketConnection.enableConsolePrint(true);
     // if (await _socketConnection.canConnect(5000, attempts: 3))
     //   _socketConnection.connect(5000, readMessage);
@@ -61,15 +68,21 @@ class Client {
 
   void launchClient() async {
     bool doneOne = false;
-    _socket.listen((event) {
+    var listener = _socket.listen((event) {
       String message = utf8.decode(event);
+      // if (!message.contains("connected")) {
+      _msg.add(jsonDecode(message));
+      // debugPrint("adding to msg");
+      // }
       debugPrint("[TCP CLIENT]: NEW MESSAGE (${message})");
-      if (!doneOne) {
-        Map<String, dynamic> test = {"command": "getAllMics"};
-        sendMessage(test);
-        doneOne = true;
-      }
+      // _firstMessage = true;
+      // if (!doneOne) {
+      // Map<String, dynamic> test = {"command": "getAllMics"};
+      // sendMessage(test);
+      // doneOne = true;
+      // }
     });
+    await listener.asFuture<void>();
   }
 
   void pop_front() {

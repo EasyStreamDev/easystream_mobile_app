@@ -2,6 +2,7 @@ import 'package:eip_test/Pages/PageSideBar/camera.dart';
 import 'package:eip_test/Pages/PageSideBar/event.dart';
 import 'package:eip_test/Pages/PageSideBar/micro.dart';
 import 'package:eip_test/Pages/PageSideBar/scene.dart';
+import 'package:eip_test/Pages/PageSideBar/actionreaction.dart';
 import 'package:eip_test/Pages/home.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,12 @@ class NavigationDrawerWidget extends StatelessWidget {
               icon: Icons.emoji_events,
               onClicked: () => selectedItem(context, 4),
             ),
+            const SizedBox(height: 12),
+            buildMenuItem(
+              text: "Action & Reaction",
+              icon: Icons.add_reaction,
+              onClicked: () => selectedItem(context, 5),
+            ),
           ],
         ),
       ),
@@ -85,6 +92,9 @@ class NavigationDrawerWidget extends StatelessWidget {
         break;
       case 4:
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const EventPage()));
+        break;
+      case 5:
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ActionReactionPage()));
         break;
     }
   }

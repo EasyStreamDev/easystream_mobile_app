@@ -20,7 +20,7 @@ class MicroPageState extends State<MicroPage> {
   Widget build(BuildContext context) {
 
     final List<Padding> widgetMicrophone = List.generate(
-      6,
+      6, //TODO: Number of microphones
       (index) => Padding(
         padding: const EdgeInsets.only(top: 30.0, bottom: 30.0),
         child: Column(
@@ -59,7 +59,7 @@ class MicroPageState extends State<MicroPage> {
       child: Scaffold(
           backgroundColor: MyColor().myGrey,
           appBar: MyAppBar(
-              title: "Micro Page", drawerScaffoldKey: drawerScaffoldKey),
+              title: "Micro", drawerScaffoldKey: drawerScaffoldKey),
           body: Scaffold(
             backgroundColor: MyColor().myGrey,
             key: drawerScaffoldKey,

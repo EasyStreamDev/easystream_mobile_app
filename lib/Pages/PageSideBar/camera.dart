@@ -21,7 +21,7 @@ class CameraPageState extends State<CameraPage> {
       },
       child: Scaffold(
         backgroundColor: MyColor().myGrey,
-        appBar: MyAppBar(title: "Camera Page", drawerScaffoldKey: drawerScaffoldKey),
+        appBar: MyAppBar(title: "Camera", drawerScaffoldKey: drawerScaffoldKey),
         body: Scaffold(
           backgroundColor: MyColor().myGrey,
           key: drawerScaffoldKey,

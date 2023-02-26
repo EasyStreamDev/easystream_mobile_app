@@ -21,7 +21,7 @@ class EventPageState extends State<EventPage> {
       },
       child: Scaffold(
         backgroundColor: MyColor().myGrey,
-        appBar: MyAppBar(title: "Event Page", drawerScaffoldKey: drawerScaffoldKey),
+        appBar: MyAppBar(title: "Event", drawerScaffoldKey: drawerScaffoldKey),
         body: Scaffold(
           backgroundColor: MyColor().myGrey,
           key: drawerScaffoldKey,

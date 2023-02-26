@@ -21,7 +21,7 @@ class ScenePageState extends State<ScenePage> {
       },
       child: Scaffold(
         backgroundColor: MyColor().myGrey,
-        appBar: MyAppBar(title: "Scene Page", drawerScaffoldKey: drawerScaffoldKey),
+        appBar: MyAppBar(title: "Scene", drawerScaffoldKey: drawerScaffoldKey),
         body: Scaffold(
           backgroundColor: MyColor().myGrey,
           key: drawerScaffoldKey,

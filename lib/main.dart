@@ -5,20 +5,20 @@ import 'Client/client.dart';
 
 import 'Styles/color.dart';
 
-Client tcpClient = new Client();
+Client tcpClient = Client();
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 void createTcpClient() async {
-  tcpClient.initialize("192.168.0.7", 47920).then((value) {
+  tcpClient.initialize("192.168.0.17", 47920).then((value) {
     tcpClient.startClient();
   });
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
   // final Client _client = new Client();
 
   @override

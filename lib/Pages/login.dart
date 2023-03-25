@@ -1,7 +1,7 @@
 import 'package:eip_test/Styles/color.dart';
+import 'package:eip_test/main.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
-import 'package:eip_test/main.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -41,7 +41,6 @@ class LoginPageState extends State<LoginPage> {
                 ),
               ),
               Padding(
-                //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: TextField(
                   style: const TextStyle(color: Colors.white),
@@ -61,7 +60,6 @@ class LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.only(
                     left: 15.0, right: 15.0, top: 15, bottom: 0),
-                //padding: EdgeInsets.symmetric(horizontal: 15),
                 child: TextField(
                   style: const TextStyle(color: Colors.white),
                   obscureText: true,
@@ -95,6 +93,7 @@ class LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
                   onPressed: () {
+                    createTcpClient();
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (_) => const HomePage()));
                   },
@@ -111,17 +110,6 @@ class LoginPageState extends State<LoginPage> {
                 'New User? Create Account',
                 style: TextStyle(color: Colors.white, fontSize: 15),
               ),
-              TextButton(
-                onPressed: () {
-                  createTcpClient();
-                  Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (_) => const HomePage()));
-                },
-                child: const Text(
-                  'Create tcp client and connect to server',
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                ),
-              )
             ],
           ),
         ),

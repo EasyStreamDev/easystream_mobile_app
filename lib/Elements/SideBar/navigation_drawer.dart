@@ -26,7 +26,7 @@ class NavigationDrawerWidget extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             buildMenuItem(
-              text: "Microphone",
+              text: "Compressor",
               icon: Icons.mic,
               onClicked: () => selectedItem(context, 1),
             ),

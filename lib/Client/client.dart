@@ -18,7 +18,8 @@ class Client {
   // late Stream<String> _listener;
 
   Future<void> initialize(String ip, int port) async {
-    _client = await TcpClient.connect(ip, port);
+    TcpClient.debug = false;
+    _client = await TcpClient.connect(ip, port, timeout: const Duration(seconds: 10));
   }
 
   void sendMessage(Map<String, dynamic> msg) {

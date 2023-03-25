@@ -15,39 +15,39 @@ class ActionReactionPageState extends State<ActionReactionPage> {
   final GlobalKey<ScaffoldState> drawerScaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<Padding> widgetBoxActionReaction = List.generate(
-      7, //TODO: Number of Action & Reaction Boxes
-      (index) => Padding(
-          padding: const EdgeInsets.only(left: 40.0, right: 40.0,top: 15.0, bottom: 15.0),
-        child: Container(
-          padding: const EdgeInsets.all(10.0),
-          height: 80.0,
-          width: double.maxFinite,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: MyColor().myWhite,
-              width: 2.0,
+    7, //TODO: Number of Action & Reaction Boxes
+    (index) => Padding(
+      padding: const EdgeInsets.only(
+          left: 40.0, right: 40.0, top: 15.0, bottom: 15.0),
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        height: 80.0,
+        width: double.maxFinite,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: MyColor().myWhite,
+            width: 2.0,
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
+        ),
+        child: Column(
+          children: <Widget>[
+            Text(
+              '$actionName ${index + 1} ',
+              style: const TextStyle(color: Colors.white, fontSize: 15),
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
-          ),
-          child: Column(
-            children: <Widget>[
-              Text(
-                '$actionName ${index + 1} ',
-                style: const TextStyle(color: Colors.white, fontSize: 15),
-              ),
-              Text(
-                'Action: $actionDescription',
-                style: const TextStyle(color: Colors.white, fontSize: 15),
-              ),
-              Text(
-                'Reaction: $reactionName',
-                style: const TextStyle(color: Colors.white, fontSize: 15),
-              ),
-
-            ],
-          ),
+            Text(
+              'Action: $actionDescription',
+              style: const TextStyle(color: Colors.white, fontSize: 15),
+            ),
+            Text(
+              'Reaction: $reactionName',
+              style: const TextStyle(color: Colors.white, fontSize: 15),
+            ),
+          ],
         ),
       ),
+    ),
   );
 
   //TODO: Get the real variables
@@ -62,7 +62,8 @@ class ActionReactionPageState extends State<ActionReactionPage> {
         return false;
       },
       child: Scaffold(
-        appBar: MyAppBar(title: "Action & Reaction", drawerScaffoldKey: drawerScaffoldKey),
+        appBar: MyAppBar(
+            title: "Action & Reaction", drawerScaffoldKey: drawerScaffoldKey),
         body: Scaffold(
           backgroundColor: MyColor().myGrey, // Background app
           key: drawerScaffoldKey,
@@ -76,7 +77,7 @@ class ActionReactionPageState extends State<ActionReactionPage> {
                       children: widgetBoxActionReaction,
                     ),
                     const Padding(
-                      padding: EdgeInsets.only(top: 40,bottom: 40),
+                      padding: EdgeInsets.only(top: 40, bottom: 40),
                     )
                   ],
                 ),
@@ -85,7 +86,7 @@ class ActionReactionPageState extends State<ActionReactionPage> {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 20,bottom: 20),
+                    padding: const EdgeInsets.only(top: 20, bottom: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -93,26 +94,25 @@ class ActionReactionPageState extends State<ActionReactionPage> {
                         SizedBox(
                           width: 150.0,
                           height: 50.0,
-                          child: ElevatedButton.icon (
+                          child: ElevatedButton.icon(
                             onPressed: () {
+                              //TODO : Navigator ListReacionPage
                               //Navigator.of(context).push(MaterialPageRoute(builder: (context) => const EventPage()));
                             },
-                            icon: const Icon(
-                                Icons.add
-                            ),
+                            icon: const Icon(Icons.add),
                             label: const Text("Reaction"),
                           ),
                         ),
                         SizedBox(
                           width: 150.0,
                           height: 50.0,
-                          child: ElevatedButton.icon (
+                          child: ElevatedButton.icon(
                             onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ListActionPage()));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ListActionPage()));
                             },
-                            icon: const Icon(
-                                Icons.add
-                            ),
+                            icon: const Icon(Icons.add),
                             label: const Text("Action"),
                           ),
                         ),

@@ -12,14 +12,27 @@ Future<void> getAllMics() async {
 
   tcpClient.sendMessage(msg);
   await Future.delayed(const Duration(seconds: 2));
-  // while (tcpClient.messages.isEmpty);
+  // while (tcpClient.messages.isEmpty) {}
 }
 
-Future<void> setAllMics() async {
+Future<void> setAllMics(List<dynamic> _mics) async {
+  for (int i = 0; i < _mics.length; i++) {
+    debugPrint("-------------------------------");
+    debugPrint("Micro numéro : " + i.toString());
+    debugPrint("Voici le nom du micro : " + _mics[i]["micName"]);
+    debugPrint("Voici le level du micro : " + _mics[i]["level"].toString());
+    debugPrint(
+        "Voici l'activité du micro : " + _mics[i]["isActive"].toString());
+    debugPrint("-------------------------------");
+  }
+  //TODO: set All mics with every names
   Map<String, dynamic> msg = {
-    "isActive": true,
-    "level": 5,
-    "micName": "Mic/Aux",
+    "command": "setMicLevel",
+    "params": {
+      "isActive": true,
+      "level": 50,
+      "micName": "Mic/Aux",
+    }
   };
 
   tcpClient.sendMessage(msg);
@@ -29,12 +42,21 @@ Future<void> setAllMics() async {
 
 List<dynamic> getMics() {
   if (tcpClient.messages.isEmpty) {
+    debugPrint("There is an error : tcp is empty");
     return ([]);
   } else {
     var tmp = tcpClient.messages;
-    if (tmp.isEmpty) return ([]);
+    if (tmp.isEmpty) {
+      debugPrint("There is an error: tmp is empty");
+      return ([]);
+    }
     var requestResult = tmp[0];
     tcpClient.pop_front();
+    if (requestResult["data"] == null) {
+      debugPrint("requestResult : " + requestResult.toString());
+      debugPrint("There is an error: requestResult is empty");
+      return ([]);
+    }
     List<dynamic> mics = requestResult["data"]["mics"];
     for (int i = 0; i < mics.length; i++) {
       click[i] = mics[i]["isActive"];
@@ -63,6 +85,7 @@ class MicroPageState extends State<MicroPage> {
 
   _getDataMics() async {
     await getAllMics();
+
     setState(
       () => {_mics = getMics()},
     );
@@ -103,11 +126,67 @@ class MicroPageState extends State<MicroPage> {
                 ],
               ),
             ));
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
-      child: Scaffold(
+
+    if (_mics.isNotEmpty) {
+      return WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        child: Scaffold(
+            backgroundColor: MyColor().myGrey,
+            appBar: MyAppBar(
+                title: "Compressor", drawerScaffoldKey: drawerScaffoldKey),
+            body: Scaffold(
+              backgroundColor: MyColor().myGrey,
+              key: drawerScaffoldKey,
+              drawer: const NavigationDrawerWidget(),
+              body: Stack(
+                children: <Widget>[
+                  SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        Column(children: widgetMicrophone),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 40, bottom: 40),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            const SizedBox(height: 12),
+                            SizedBox(
+                              width: 150.0,
+                              height: 50.0,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  await setAllMics(_mics);
+                                },
+                                child: const Text("Save changes"),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )),
+      );
+    } else {
+      return WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        child: Scaffold(
           backgroundColor: MyColor().myGrey,
           appBar: MyAppBar(
               title: "Compressor", drawerScaffoldKey: drawerScaffoldKey),
@@ -115,46 +194,12 @@ class MicroPageState extends State<MicroPage> {
             backgroundColor: MyColor().myGrey,
             key: drawerScaffoldKey,
             drawer: const NavigationDrawerWidget(),
-            body: Stack(
-              children: <Widget>[
-                SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      Column(children: widgetMicrophone),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 40, bottom: 40),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20, bottom: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          const SizedBox(height: 12),
-                          SizedBox(
-                            width: 150.0,
-                            height: 50.0,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                await setAllMics();
-                              },
-                              child: const Text("Save changes"),
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          )),
-    );
+            body: const Center(
+              child: CircularProgressIndicator()
+              ),
+          ),
+        ),
+      );
+    }
   }
 }

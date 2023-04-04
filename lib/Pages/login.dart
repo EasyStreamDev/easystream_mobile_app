@@ -1,5 +1,6 @@
 import 'package:eip_test/Styles/color.dart';
 import 'package:eip_test/main.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
 
@@ -92,10 +93,25 @@ class LoginPageState extends State<LoginPage> {
                     color: MyColor().myOrange,
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
-                  onPressed: () {
-                    createTcpClient();
-                    Navigator.pushReplacement(context,
+                  onPressed: () async {
+                    await createTcpClient().then((value) {
+                      if (value == true) {
+                        Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (_) => const HomePage()));
+                      } else {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Error", style: TextStyle(color: MyColor().myOrange)),
+                              content: Text("Couldn't connect to the server OBS", style: TextStyle(color: MyColor().myOrange)),
+                              backgroundColor: MyColor().myGrey,
+                            );
+                          }
+                        );
+                      }
+                    });
                   },
                   child: const Text(
                     'Login',

@@ -1,60 +1,69 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:tcp_client_dart/tcp_client_dart.dart';
 
 class Client {
-  // late TcpSocketConnection _socketConnection;
   late Socket _socket;
-  late String _ip;
-  late int _port;
   late TcpClient _client;
-  List<Map<String, dynamic>> _msg = [];
-  List<String> _responses = [];
-  String _tmpMesssage = "";
-  bool _firstMessage = false;
-  // late Stream<String> _listener;
+  final List<Map<String, dynamic>> _msg = [];
 
-  Future<void> initialize(String ip, int port) async {
+  Future<bool> initialize(String ip, int port) async {
     TcpClient.debug = false;
-    _client = await TcpClient.connect(ip, port, timeout: const Duration(seconds: 10));
+    try {
+      _client = await TcpClient.connect(ip, port, timeout: const Duration(seconds: 10));
+      return true;
+    } catch (e) {
+      debugPrint("Couldn't initialize connection to OBS : " + e.toString());
+      return false;
+    }
   }
 
   void sendMessage(Map<String, dynamic> msg) {
-    String toSend = JsonEncoder().convert(msg).trim();
-    _client.write(toSend);
+    String toSend = const JsonEncoder().convert(msg).trim();
+    try {
+      _client.write(toSend);
+    } catch (e) {
+      debugPrint("Couldn't send a message to OBS : " + e.toString());
+    }
   }
 
-  void startClient() async {
-    _client.connectionStream.listen((event) {
-      debugPrint("[TCP CLIENT]: NEW MESSAGE (${event})");
-    });
-
-    _client.stringStream.listen((event) {
-      if (!event.contains("connected")) {
-        _msg.add(jsonDecode(event));
-        debugPrint("adding message");
-      }
-      debugPrint("[TCP CLIENT]: NEW MESSAGE (${event})");
-    });
+  Future<bool> startClient() async {
+    try {
+      _client.connectionStream.listen((event) {
+        debugPrint("[TCP CLIENT]: NEW MESSAGE ($event)");
+      });
+      _client.stringStream.listen((event) {
+        if (!event.contains("connected")) {
+          _msg.add(jsonDecode(event));
+          debugPrint("adding message");
+        }
+        debugPrint("[TCP CLIENT]: NEW MESSAGE ($event)");
+      });
+      return true;
+    } catch (e) {
+      debugPrint("Couldnt start client connction to OBS : " + e.toString());
+      return false;
+    }
   }
 
   void readMessage(String msg) {
-    debugPrint("[TCP CLIENT]: NEW MESSAGE (${msg})");
+    debugPrint("[TCP CLIENT]: NEW MESSAGE ($msg)");
   }
 
   void launchClient() async {
-    bool doneOne = false;
     var listener = _socket.listen((event) {
       String message = utf8.decode(event);
       _msg.add(jsonDecode(message));
-      debugPrint("[TCP CLIENT]: NEW MESSAGE (${message})");
+      debugPrint("[TCP CLIENT]: NEW MESSAGE ($message)");
     });
     await listener.asFuture<void>();
   }
 
+  // ignore: non_constant_identifier_names
   void pop_front() {
     _msg.removeAt(0);
   }

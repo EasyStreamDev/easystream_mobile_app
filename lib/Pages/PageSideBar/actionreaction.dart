@@ -82,7 +82,7 @@ class ActionReactionPageState extends State<ActionReactionPage> {
                   ],
                 ),
               ),
-              Expanded(
+              Positioned.fill(
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(

@@ -11,15 +11,19 @@ void main() {
   runApp(const MyApp());
 }
 
-void createTcpClient() async {
-  tcpClient.initialize("192.168.0.17", 47920).then((value) {
+Future<bool> createTcpClient() async {
+  bool valueReturn = false;
+
+  //tcpClient.initialize("172.16.25.147", 47920).then((value) {
+  await tcpClient.initialize("192.168.0.17", 47920).then((value) {
     tcpClient.startClient();
+    valueReturn = value;
   });
+  return valueReturn;
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  // final Client _client = new Client();
 
   @override
   Widget build(BuildContext context) {

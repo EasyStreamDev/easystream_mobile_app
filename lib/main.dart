@@ -14,12 +14,14 @@ void main() {
 Future<bool> createTcpClient() async {
   bool valueReturn = false;
 
-  //tcpClient.initialize("172.16.25.147", 47920).then((value) {
-  await tcpClient.initialize("192.168.0.17", 47920).then((value) {
+  // await tcpClient.initialize("172.16.6.206", 47920).then((value) { // OOP
+  await tcpClient.initialize("192.168.0.17", 47920).then((value) { // house
+  // await tcpClient.initialize("172.16.30.47", 47920).then((value) { // operating system
     tcpClient.startClient();
     valueReturn = value;
   });
   return valueReturn;
+  // return true; 
 }
 
 class MyApp extends StatelessWidget {

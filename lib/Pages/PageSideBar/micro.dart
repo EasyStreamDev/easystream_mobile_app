@@ -5,7 +5,10 @@ import 'package:eip_test/Styles/color.dart';
 import 'package:eip_test/main.dart';
 import 'package:flutter/material.dart';
 
-List<bool> click = List.generate(100, (index) => false);
+List<bool> micClickList = List.generate(100, (index) => false);
+List<String> micNameList = List.generate(100, (index) => "null");
+List<double> micLevelList = List.generate(100, (index) => 0);
+
 
 Future<void> getAllMics() async {
   Map<String, dynamic> msg = {"command": "getAllMics"};
@@ -16,50 +19,59 @@ Future<void> getAllMics() async {
 }
 
 Future<void> setAllMics(List<dynamic> _mics) async {
-  for (int i = 0; i < _mics.length; i++) {
-    debugPrint("-------------------------------");
-    debugPrint("Micro numéro : " + i.toString());
-    debugPrint("Voici le nom du micro : " + _mics[i]["micName"]);
-    debugPrint("Voici le level du micro : " + _mics[i]["level"].toString());
-    debugPrint(
-        "Voici l'activité du micro : " + _mics[i]["isActive"].toString());
-    debugPrint("-------------------------------");
+  for (int i = 0; i < _mics.length; i ++) {
+    Map<String, dynamic> msg = {
+      "command": "setMicLevel",
+      "params": {
+        "isActive": micClickList[i],
+        "level": micLevelList[i],
+        "micName": micNameList[i],
+      }
+    };
+    tcpClient.sendMessage(msg);
   }
-  //TODO: set All mics with every names
-  Map<String, dynamic> msg = {
-    "command": "setMicLevel",
-    "params": {
-      "isActive": true,
-      "level": 50,
-      "micName": "Mic/Aux",
-    }
-  };
-
-  tcpClient.sendMessage(msg);
   await Future.delayed(const Duration(seconds: 2));
-  // while (tcpClient.messages.isEmpty);
+  if (tcpClient.messages.isNotEmpty) {
+    tcpClient.messages.clear();
+  }
 }
 
 List<dynamic> getMics() {
   if (tcpClient.messages.isEmpty) {
-    debugPrint("There is an error : tcp is empty");
+    debugPrint("There has been an error: tcp is empty");
     return ([]);
   } else {
+    debugPrint("------tcpClient.messages-------");
+    debugPrint("tcpClient.messages : " + tcpClient.messages.toString());
     var tmp = tcpClient.messages;
+    debugPrint("-------------tmp---------------");
+    debugPrint("tmp : " + tmp.toString());
     if (tmp.isEmpty) {
-      debugPrint("There is an error: tmp is empty");
+      debugPrint("There has been an error: tmp is empty");
       return ([]);
     }
+    debugPrint("------------tmp[0]-------------");
+    debugPrint("tmp[0] : " + tmp[0].toString());
+    debugPrint("------------tmp[i]-------------");
+    for (int i = 0; i < tmp.length; i ++) {
+      debugPrint("tmp[" + i.toString() + "] : " + tmp[i].toString());
+    }
     var requestResult = tmp[0];
+    if (tmp[0]["data"] == null) {
+      debugPrint("There has been an error: couldn't get the last data");
+      requestResult = tmp[1];
+    }
     tcpClient.pop_front();
+    // tcpClient.messages.clear();
     if (requestResult["data"] == null) {
-      debugPrint("requestResult : " + requestResult.toString());
-      debugPrint("There is an error: requestResult is empty");
+      debugPrint("There has been an error: requestResult is empty");
       return ([]);
     }
     List<dynamic> mics = requestResult["data"]["mics"];
     for (int i = 0; i < mics.length; i++) {
-      click[i] = mics[i]["isActive"];
+      micClickList[i] = mics[i]["isActive"];
+      micNameList[i] = mics[i]["micName"];
+      micLevelList[i] = mics[i]["level"];
     }
     return (mics);
   }
@@ -100,7 +112,7 @@ class MicroPageState extends State<MicroPage> {
               child: Column(
                 children: <Widget>[
                   Text(
-                    '${_mics[index]["micName"]}',
+                    micNameList[index],
                     style: const TextStyle(color: Colors.white, fontSize: 15),
                   ),
                   Row(
@@ -108,17 +120,20 @@ class MicroPageState extends State<MicroPage> {
                       SizedBox(
                         width: 300,
                         child: MyVolumeBar(
-                          mics: _mics,
+                          level: micLevelList[index],
+                          onChange: (newVal) {
+                            setState(() {micLevelList[index] = newVal;});
+                          },
                         ),
                       ),
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            click[index] = !click[index];
+                            micClickList[index] = !micClickList[index];
                           });
                         },
                         icon: Icon(
-                            (click[index] == true) ? Icons.mic : Icons.mic_off),
+                            (micClickList[index] == true) ? Icons.mic : Icons.mic_off),
                         color: MyColor().myWhite,
                       ),
                     ],

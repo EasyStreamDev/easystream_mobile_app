@@ -3,10 +3,13 @@ import 'package:eip_test/Pages/home.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class MyVolumeBar extends StatefulWidget {
-  const MyVolumeBar({Key? key, required this.mics}) : super(key: key);
+  MyVolumeBar({Key? key, required this.level, required this.onChange}) : super(key: key);
 
-  final List<dynamic> mics;
+  double level;
+  // ignore: prefer_typing_uninitialized_variables
+  final onChange;
 
   @override
   State<MyVolumeBar> createState() => MyVolumeBarState();
@@ -18,12 +21,11 @@ class MyVolumeBarState extends State<MyVolumeBar> {
   @override
   void initState() {
     super.initState();
-    currentSliderValue = widget.mics[0]["level"];
+    currentSliderValue = widget.level;
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Slider(
       value: currentSliderValue,
       max: 100,
@@ -32,10 +34,10 @@ class MyVolumeBarState extends State<MyVolumeBar> {
       onChanged: (double value) {
         setState(() {
           currentSliderValue = value;
-          debugPrint('number : ${widget.mics[0]["level"]}');
+          widget.level = value;
+          widget.onChange(widget.level);
         });
       },
     );
   }
 }
-

@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_launcher_icons: ^0.10.0
   tcp_client_dart: ^0.2.0
+  http: ^0.13.6
 
 flutter_icons:
   image_path: "assets/images/logo_easystream_application.png"

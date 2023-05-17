@@ -1,3 +1,4 @@
+import 'package:eip_test/Client/clientlogin.dart';
 import 'package:eip_test/Pages/login.dart';
 import 'package:eip_test/Tools/color_tool.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +12,12 @@ void main() {
   runApp(const MyApp());
 }
 
-Future<bool> createTcpClient() async {
+Future<bool> createTcpClient(String ipAddress) async {
   bool valueReturn = false;
-
-  // await tcpClient.initialize("172.16.6.206", 47920).then((value) { // OOP
+  debugPrint(ipAddress);
+  // await tcpClient.initialize("172.16.27.211", 47920).then((value) { // OOP
   await tcpClient.initialize("192.168.0.17", 47920).then((value) { // house
-  // await tcpClient.initialize("172.16.30.47", 47920).then((value) { // operating system
+  // await tcpClient.initialize("172.16.7.214", 47920).then((value) { // operating system
     tcpClient.startClient();
     valueReturn = value;
   });
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: buildMaterialColor(MyColor().myOrange),
         ),
         home: const LoginPage(),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

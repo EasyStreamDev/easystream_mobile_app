@@ -1,3 +1,4 @@
+import 'package:eip_test/Pages/SubPage/worddetection.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,7 @@ class ListActionPageState extends State<ListActionPage> {
                         style: const TextStyle(color: Colors.white, fontSize: 15),
                         recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const EventPage())); //TODO: Towards WordDetection Page
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WordDetectionPage()));
                         }
                       ),
                     ),

@@ -1,6 +1,7 @@
 import 'package:eip_test/Elements/AppBar/app_bar.dart';
 import 'package:eip_test/Elements/SideBar/navigation_drawer.dart';
 import 'package:eip_test/Pages/SubPage/listaction.dart';
+import 'package:eip_test/Pages/SubPage/listreaction.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/material.dart';
 
@@ -14,8 +15,14 @@ class ActionReactionPage extends StatefulWidget {
 class ActionReactionPageState extends State<ActionReactionPage> {
   final GlobalKey<ScaffoldState> drawerScaffoldKey = GlobalKey<ScaffoldState>();
 
+  //TODO: Get the real variables
+  static var actionName = "Word Detection";
+  static var actionDescription = "If you say...";
+  static var reactionName = "Change Camera...";
+  static var nbrAction = 7;
+
   final List<Padding> widgetBoxActionReaction = List.generate(
-    7, //TODO: Number of Action & Reaction Boxes
+    nbrAction, //TODO: Number of Action & Reaction Boxes
     (index) => Padding(
       padding: const EdgeInsets.only(
           left: 40.0, right: 40.0, top: 15.0, bottom: 15.0),
@@ -26,7 +33,7 @@ class ActionReactionPageState extends State<ActionReactionPage> {
         decoration: BoxDecoration(
           border: Border.all(
             color: MyColor().myWhite,
-            width: 2.0,
+            width: 1.5,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(5)),
         ),
@@ -49,11 +56,6 @@ class ActionReactionPageState extends State<ActionReactionPage> {
       ),
     ),
   );
-
-  //TODO: Get the real variables
-  static var actionName = "Word Detection";
-  static var actionDescription = "If you say...";
-  static var reactionName = "Change Camera...";
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +98,7 @@ class ActionReactionPageState extends State<ActionReactionPage> {
                           height: 50.0,
                           child: ElevatedButton.icon(
                             onPressed: () {
-                              //TODO : Navigator ListReacionPage
-                              //Navigator.of(context).push(MaterialPageRoute(builder: (context) => const EventPage()));
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ListReactionPage()));
                             },
                             icon: const Icon(Icons.add),
                             label: const Text("Reaction"),

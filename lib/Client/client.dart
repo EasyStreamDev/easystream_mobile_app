@@ -23,7 +23,7 @@ class Client {
   }
 
   void sendMessage(Map<String, dynamic> msg) {
-    String toSend = const JsonEncoder().convert(msg).trim();
+    String toSend = const JsonEncoder().convert(msg).trim() + "\r\n";
     try {
       _client.write(toSend);
     } catch (e) {

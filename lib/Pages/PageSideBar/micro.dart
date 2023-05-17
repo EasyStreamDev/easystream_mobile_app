@@ -41,20 +41,10 @@ List<dynamic> getMics() {
     debugPrint("There has been an error: tcp is empty");
     return ([]);
   } else {
-    debugPrint("------tcpClient.messages-------");
-    debugPrint("tcpClient.messages : " + tcpClient.messages.toString());
     var tmp = tcpClient.messages;
-    debugPrint("-------------tmp---------------");
-    debugPrint("tmp : " + tmp.toString());
     if (tmp.isEmpty) {
       debugPrint("There has been an error: tmp is empty");
       return ([]);
-    }
-    debugPrint("------------tmp[0]-------------");
-    debugPrint("tmp[0] : " + tmp[0].toString());
-    debugPrint("------------tmp[i]-------------");
-    for (int i = 0; i < tmp.length; i ++) {
-      debugPrint("tmp[" + i.toString() + "] : " + tmp[i].toString());
     }
     var requestResult = tmp[0];
     if (tmp[0]["data"] == null) {

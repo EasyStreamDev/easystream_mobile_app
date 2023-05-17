@@ -3,8 +3,6 @@ import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../PageSideBar/event.dart';
-
 class ListActionPage extends StatefulWidget {
   const ListActionPage({Key? key}) : super(key: key);
 

@@ -1,6 +1,4 @@
-import 'package:eip_test/Pages/home.dart';
 import 'package:eip_test/Pages/login.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -44,7 +42,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         },
       ),
     );
-    throw UnimplementedError();
   }
 
   @override

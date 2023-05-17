@@ -1,5 +1,3 @@
-import 'package:eip_test/Elements/AppBar/app_bar.dart';
-import 'package:eip_test/Elements/SideBar/navigation_drawer.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/material.dart';
 

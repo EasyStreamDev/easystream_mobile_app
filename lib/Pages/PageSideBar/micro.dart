@@ -89,7 +89,7 @@ class MicroPageState extends State<MicroPage> {
     await getAllMics();
 
     setState(
-      () => {_mics = getMics()},
+      () => _mics = getMics(),
     );
   }
 

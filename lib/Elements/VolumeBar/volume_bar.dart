@@ -1,6 +1,3 @@
-import 'package:eip_test/Pages/PageSideBar/micro.dart';
-import 'package:eip_test/Pages/home.dart';
-import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable

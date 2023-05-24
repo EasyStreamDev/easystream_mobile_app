@@ -1,7 +1,6 @@
 import 'package:eip_test/Client/clientlogin.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:eip_test/main.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
 
@@ -18,7 +17,7 @@ class LoginPageState extends State<LoginPage> {
   static String ipAddress = "";
   bool isVisible = false;
   dynamic _clientLogin;
-  final TextEditingController input = new TextEditingController();
+  final TextEditingController input = TextEditingController();
 
   @override
   void initState() {
@@ -97,6 +96,7 @@ class LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.only(
                     left: 15.0, right: 15.0, top: 15.0, bottom: 0.0),
                 child: TextField(
+                  autofocus: true,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(

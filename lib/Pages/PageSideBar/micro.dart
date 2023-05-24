@@ -21,7 +21,7 @@ Future<void> getAllMics() async {
 Future<void> setAllMics(List<dynamic> _mics) async {
   for (int i = 0; i < _mics.length; i ++) {
     Map<String, dynamic> msg = {
-      "command": "setMicLevel",
+      "command": "setCompressorLevel",
       "params": {
         "isActive": micClickList[i],
         "level": micLevelList[i],

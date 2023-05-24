@@ -13,13 +13,19 @@ void main() {
 
 Future<bool> createTcpClient(String ipAddress) async {
   bool valueReturn = false;
-  debugPrint(ipAddress);
-  // await tcpClient.initialize("172.16.27.211", 47920).then((value) { // OOP
-  await tcpClient.initialize("192.168.0.17", 47920).then((value) { // house
-  // await tcpClient.initialize("172.16.7.214", 47920).then((value) { // operating system
-    tcpClient.startClient();
-    valueReturn = value;
-  });
+
+  if (ipAddress.isNotEmpty) {
+    debugPrint(ipAddress);
+    await tcpClient.initialize(ipAddress, 47920).then((value) {
+      tcpClient.startClient();
+      valueReturn = value;
+    });
+  } else {
+    await tcpClient.initialize("192.168.0.17", 47920).then((value) {
+      tcpClient.startClient();
+      valueReturn = value;
+    });
+  }
   return valueReturn;
   // return true; 
 }

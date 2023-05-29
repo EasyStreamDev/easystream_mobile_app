@@ -9,7 +9,6 @@ List<bool> micClickList = List.generate(100, (index) => false);
 List<String> micNameList = List.generate(100, (index) => "null");
 List<double> micLevelList = List.generate(100, (index) => 0);
 
-
 Future<void> getAllMics() async {
   Map<String, dynamic> msg = {"command": "getAllMics"};
 
@@ -112,7 +111,9 @@ class MicroPageState extends State<MicroPage> {
                         child: MyVolumeBar(
                           level: micLevelList[index],
                           onChange: (newVal) {
-                            setState(() {micLevelList[index] = newVal;});
+                            setState(() {
+                              micLevelList[index] = newVal;
+                            });
                           },
                         ),
                       ),
@@ -122,8 +123,9 @@ class MicroPageState extends State<MicroPage> {
                             micClickList[index] = !micClickList[index];
                           });
                         },
-                        icon: Icon(
-                            (micClickList[index] == true) ? Icons.mic : Icons.mic_off),
+                        icon: Icon((micClickList[index] == true)
+                            ? Icons.mic
+                            : Icons.mic_off),
                         color: MyColor().myWhite,
                       ),
                     ],
@@ -199,9 +201,7 @@ class MicroPageState extends State<MicroPage> {
             backgroundColor: MyColor().myGrey,
             key: drawerScaffoldKey,
             drawer: const NavigationDrawerWidget(),
-            body: const Center(
-              child: CircularProgressIndicator()
-              ),
+            body: const Center(child: CircularProgressIndicator()),
           ),
         ),
       );

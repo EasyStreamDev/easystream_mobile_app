@@ -96,7 +96,6 @@ class LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.only(
                     left: 15.0, right: 15.0, top: 15.0, bottom: 0.0),
                 child: TextField(
-                  autofocus: true,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -156,7 +155,6 @@ class LoginPageState extends State<LoginPage> {
                     color: MyColor().myOrange,
                     borderRadius: BorderRadius.circular(20)),
                 child: TextButton(
-                  // clientLogin.login(email, password)
                   onPressed: () async {
                     debugPrint("email : " + email);
                     debugPrint("password : " + password);

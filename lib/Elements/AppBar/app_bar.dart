@@ -1,5 +1,6 @@
 import 'package:eip_test/Pages/login.dart';
 import 'package:flutter/material.dart';
+import 'package:eip_test/Tools/globals.dart' as globals;
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final GlobalKey<ScaffoldState> drawerScaffoldKey;
@@ -19,6 +20,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           onPressed: () {
+            globals.reactionlist.clear();
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (_) => const LoginPage()),
             );

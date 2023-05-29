@@ -27,7 +27,7 @@ Future<bool> createTcpClient(String ipAddress) async {
     });
   }
   return valueReturn;
-  // return true; 
+  // return true;
 }
 
 class MyApp extends StatelessWidget {

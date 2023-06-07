@@ -58,7 +58,7 @@ mobile-app/lib/
 ## Screenshots
 
 ### Login and Home Page :
-![1 - Login Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/58da4950-39b5-4087-ab53-094f1ecd97be)
+![1 - Login Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/c408d9cb-b971-411f-a65b-ae8ed46a8e4c)
 ![2 - Home Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/3158cad7-8a8f-49ca-b52f-e7383780b496)
 ![3 - Navigation side bar](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/290e2931-d8a4-4931-8083-19dd6b25f007)
 

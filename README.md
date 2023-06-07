@@ -45,8 +45,11 @@ mobile-app/lib/
 
 ## Featrues
 
-## Screenshots
+### Compressor
 
+### Action & Reaction
+
+## Screenshots
 
 ![1 - Login Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/58da4950-39b5-4087-ab53-094f1ecd97be)
 ![2 - Home Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/3158cad7-8a8f-49ca-b52f-e7383780b496)

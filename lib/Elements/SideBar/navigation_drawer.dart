@@ -1,8 +1,8 @@
 import 'package:eip_test/Pages/PageSideBar/camera.dart';
 import 'package:eip_test/Pages/PageSideBar/event.dart';
-import 'package:eip_test/Pages/PageSideBar/micro.dart';
+import 'package:eip_test/Pages/PageSideBar/compressor.dart';
 import 'package:eip_test/Pages/PageSideBar/scene.dart';
-import 'package:eip_test/Pages/PageSideBar/actionreaction.dart';
+import 'package:eip_test/Pages/PageSideBar/action_reaction.dart';
 import 'package:eip_test/Pages/home.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/material.dart';

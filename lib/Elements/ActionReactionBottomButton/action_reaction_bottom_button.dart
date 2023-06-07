@@ -1,5 +1,5 @@
-import 'package:eip_test/Pages/SubPage/ActionPage/listaction.dart';
-import 'package:eip_test/Pages/SubPage/ReactionPage/listreaction.dart';
+import 'package:eip_test/Pages/SubPage/ActionPage/list_action.dart';
+import 'package:eip_test/Pages/SubPage/ReactionPage/list_reaction.dart';
 import 'package:flutter/material.dart';
 
 class MyActionReactionBottomButton extends StatelessWidget {

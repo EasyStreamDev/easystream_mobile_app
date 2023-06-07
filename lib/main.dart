@@ -1,7 +1,7 @@
 import 'package:eip_test/Pages/login.dart';
 import 'package:eip_test/Tools/color_tool.dart';
 import 'package:flutter/material.dart';
-import 'Client/client.dart';
+import 'Client/client_socket.dart';
 
 import 'Styles/color.dart';
 

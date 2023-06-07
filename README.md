@@ -65,8 +65,10 @@ mobile-app/lib/
 ### Compressor Page :
 ![4 - Compressor Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/7b23c117-ca61-44b1-bee8-2e33c98961a9)
 
-### Action & Reaction Page and subPages :
+### Action & Reaction Page :
 ![5 0 0 - Action   Reaction Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/db9b029b-3156-4eb4-a4b9-1c68d592f7c8)
+
+### Action & Reaction subPage :
 ![5 1 0- List of Reaction subPage](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/ec6006e6-09db-44e9-9362-19268eb1bd28)
 ![5 1 1 - Add Reaction subPage](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/8e13da66-9cb8-40e2-b7ff-c8292b3613bd)
 ![5 2 0 - List of Action subPage](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/22345e8c-aa69-47a0-9a7c-c48a80cf3c23)

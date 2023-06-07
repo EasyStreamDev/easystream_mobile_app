@@ -43,7 +43,7 @@ mobile-app/lib/
 └──main.dart							# <3 of the app
 ```
 
-## Featrues
+## Features
 
 ### Compressor :
   - Change the compressor volume
@@ -55,15 +55,15 @@ mobile-app/lib/
 
 ## Screenshots
 
-### Login and Home Page
+### Login and Home Page :
 ![1 - Login Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/58da4950-39b5-4087-ab53-094f1ecd97be)
 ![2 - Home Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/3158cad7-8a8f-49ca-b52f-e7383780b496)
 ![3 - Navigation side bar](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/290e2931-d8a4-4931-8083-19dd6b25f007)
 
-### Compressor Page
+### Compressor Page :
 ![4 - Compressor Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/b5cab45a-decd-477c-9024-0dc3c7621672)
 
-### Action & Reaction Page and subPages
+### Action & Reaction Page and subPages :
 ![5 0 0 - Action   Reaction Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/52d0ea97-672c-49d4-a6f8-3731fe1d1541)
 ![5 1 0- List of Reaction subPage](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/7dcabe15-ba10-43f9-80b1-dcd6c7c5d23d)
 ![5 1 1 - Add Reaction subPage](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/ee3dbb94-6027-4fa4-8125-cbdd0f58789f)

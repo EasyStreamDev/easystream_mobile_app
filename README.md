@@ -45,9 +45,13 @@ mobile-app/lib/
 
 ## Featrues
 
-### Compressor
+### Compressor :
+  - Change the compressor volume
+  - Mute and unmute the compressor
 
-### Action & Reaction
+### Action & Reaction :
+  - create reaction with a name, the reaction and a parameter
+  - link the created reaction to an action
 
 ## Screenshots
 

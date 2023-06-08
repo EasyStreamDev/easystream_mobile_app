@@ -13,7 +13,7 @@ https://flutter.dev/docs/get-started/install/
 ```
 mobile-app/lib/
 ├──Client/
-<span style="color: green">|</span>	└──client_socket.dart					# socket connection OBS
+|	└──client_socket.dart					# socket connection OBS
 |	└──client_server.dart					# connection server
 ├──Elements
 |	├──ActiionReactionBottomButton/

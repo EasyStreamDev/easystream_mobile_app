@@ -16,8 +16,6 @@ mobile-app/lib/
 |	└──client_socket.dart					# socket connection OBS
 |	└──client_server.dart					# connection server
 ├──Elements
-|	├──ActiionReactionBottomButton/
-|	|	└──action_reaction_bottom_button.dart		# custom bottom button Action & Reaction Page
 |	├──AppBar/
 |	|	└──app_bar.dart					# custom app bar
 |	├──SideBar/

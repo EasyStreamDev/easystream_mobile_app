@@ -1,6 +1,7 @@
-import 'package:eip_test/Elements/ActionReactionBottomButton/action_reaction_bottom_button.dart';
 import 'package:eip_test/Elements/AppBar/app_bar.dart';
 import 'package:eip_test/Elements/SideBar/navigation_drawer.dart';
+import 'package:eip_test/Pages/SubPage/ActionPage/list_action.dart';
+import 'package:eip_test/Pages/SubPage/ReactionPage/list_reaction.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:eip_test/main.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,6 @@ Future<void> getActReactCouples() async {
 
   tcpClient.sendMessage(msg);
   await Future.delayed(const Duration(seconds: 2));
-  // while (tcpClient.messages.isEmpty) {}
 }
 
 List<dynamic> getCouples() {
@@ -37,13 +37,11 @@ List<dynamic> getCouples() {
       requestResult = tmp[1];
     }
     tcpClient.pop_front();
-    // tcpClient.messages.clear();
     if (requestResult["data"] == null) {
       debugPrint("There has been an error: requestResult is empty");
       return ([]);
     }
     List<dynamic> couples = requestResult["data"]["actReacts"];
-    debugPrint("=====================couples=====================");
     nbrActionReaction = requestResult["data"]["length"];
     debugPrint("nbrActionReaction : " + nbrActionReaction.toString());
     debugPrint(couples.toString());
@@ -114,78 +112,7 @@ class ActionReactionPageState extends State<ActionReactionPage> {
       (index) => Padding(
         padding: const EdgeInsets.only(
             left: 40.0, right: 40.0, top: 15.0, bottom: 15.0),
-        child: Container(
-          padding: const EdgeInsets.all(10.0),
-          height: 100.0,
-          width: double.maxFinite,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: MyColor().myWhite,
-              width: 1.5,
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
-          ),
-          child: Column(
-            children: <Widget>[
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: '${actionType[index]} ${index + 1}',
-                      style: const TextStyle(color: Colors.white, fontSize: 15),
-                    ),
-                  ],
-                ),
-              ),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    const TextSpan(
-                      text: 'Action: ',
-                    ),
-                    const TextSpan(text: "if you say : "),
-                    for (int i = 0; i < actionWords[index].length; i++)
-                      TextSpan(
-                        text: actionWords[index][i] + ' ',
-                        style: TextStyle(
-                            color: MyColor().myOrange,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold),
-                      ),
-                  ],
-                ),
-              ),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    const TextSpan(
-                      text: 'Reaction: ',
-                    ),
-                    TextSpan(
-                      text: reactionType[index],
-                      style: TextStyle(
-                          color: MyColor().myOrange,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    if (reactionType[index] == "SCENE_SWITCH")
-                      const TextSpan(
-                        text: " : ",
-                      ),
-                    if (reactionType[index] == "SCENE_SWITCH")
-                      TextSpan(
-                        text: reactionParams[index],
-                        style: TextStyle(
-                            color: MyColor().myOrange,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold),
-                      ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        child: buildActionReaction(index),
       ),
     );
     if (_couples.isNotEmpty && !isLoading) {
@@ -203,19 +130,8 @@ class ActionReactionPageState extends State<ActionReactionPage> {
             drawer: const NavigationDrawerWidget(),
             body: Stack(
               children: <Widget>[
-                SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      Column(
-                        children: widgetBoxActionReaction,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 40, bottom: 40),
-                      )
-                    ],
-                  ),
-                ),
-                const MyActionReactionBottomButton(),
+                buildActionReactionBoxScrollView(widgetBoxActionReaction),
+                buildActionReactionBottomButton(),
               ],
             ),
           ),
@@ -234,15 +150,15 @@ class ActionReactionPageState extends State<ActionReactionPage> {
             backgroundColor: MyColor().myGrey, // Background app
             key: drawerScaffoldKey,
             drawer: const NavigationDrawerWidget(),
-            body: const Stack(
+            body: Stack(
               children: <Widget>[
-                Center(
+                const Center(
                   child: Text(
                     "No Action & Reaction to load",
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
-                MyActionReactionBottomButton(),
+                buildActionReactionBottomButton(),
               ],
             ),
           ),
@@ -262,10 +178,10 @@ class ActionReactionPageState extends State<ActionReactionPage> {
             backgroundColor: MyColor().myGrey,
             key: drawerScaffoldKey,
             drawer: const NavigationDrawerWidget(),
-            body: const Stack(
+            body: Stack(
               children: [
-                Center(child: CircularProgressIndicator()),
-                MyActionReactionBottomButton(),
+                const Center(child: CircularProgressIndicator()),
+                buildActionReactionBottomButton(),
               ],
             ),
           ),
@@ -273,4 +189,164 @@ class ActionReactionPageState extends State<ActionReactionPage> {
       );
     }
   }
+
+  /// Widget action & reaction Container
+  /// 
+  /// @param [index] is the current index in the list
+  Widget buildActionReaction(int index) => Container(
+        padding: const EdgeInsets.all(10.0),
+        height: 100.0,
+        width: double.maxFinite,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: MyColor().myWhite,
+            width: 1.5,
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
+        ),
+        child: Column(
+          children: <Widget>[
+            builActionReactionActionTypeText(index),
+            builActionReactionActionText(index),
+            builActionReactionReactionText(index),
+          ],
+        ),
+      );
+
+  /// Widget action & reaction action type RichText
+  /// 
+  /// @param [index] is the current index in the list
+  Widget builActionReactionActionTypeText(int index) => RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: '${actionType[index]} ${index + 1}',
+              style: const TextStyle(color: Colors.white, fontSize: 15),
+            ),
+          ],
+        ),
+      );
+
+  /// Widget action & reaction action RichText
+  /// 
+  /// @param [index] is the current index in the list
+  Widget builActionReactionActionText(int index) => RichText(
+        text: TextSpan(
+          children: [
+            const TextSpan(
+              text: 'Action: ',
+            ),
+            const TextSpan(text: "if you say : "),
+            for (int i = 0; i < actionWords[index].length; i++)
+              TextSpan(
+                text: actionWords[index][i] + ' ',
+                style: TextStyle(
+                    color: MyColor().myOrange,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+          ],
+        ),
+      );
+
+  /// Widget action & reaction reaction RichText
+  /// 
+  /// @param [index] is the current index in the list
+  Widget builActionReactionReactionText(int index) => RichText(
+        text: TextSpan(
+          children: [
+            const TextSpan(
+              text: 'Reaction: ',
+            ),
+            TextSpan(
+              text: reactionType[index],
+              style: TextStyle(
+                  color: MyColor().myOrange,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+            if (reactionType[index] == "SCENE_SWITCH")
+              const TextSpan(
+                text: " : ",
+              ),
+            if (reactionType[index] == "SCENE_SWITCH")
+              TextSpan(
+                text: reactionParams[index],
+                style: TextStyle(
+                    color: MyColor().myOrange,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+          ],
+        ),
+      );
+
+  /// Widget action & reaction box scroll view SingleChildScrollView
+  /// 
+  /// @param [widgetBoxActionReaction] is the list of Action & Reaction
+  Widget buildActionReactionBoxScrollView(
+          List<Padding> widgetBoxActionReaction) =>
+      SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Column(
+              children: widgetBoxActionReaction,
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 40, bottom: 40),
+            )
+          ],
+        ),
+      );
+
+  /// Widget action & reaction bottom button Positioned
+  Widget buildActionReactionBottomButton() => Positioned.fill(
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20, bottom: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                const SizedBox(height: 12),
+                buildActionReactionButtonReaction(),
+                buildActionReactionButtonAction(),
+                const SizedBox(height: 12),
+              ],
+            ),
+          ),
+        ),
+      );
+
+  /// Widget action & reaction button reaction SizedBox
+  Widget buildActionReactionButtonReaction() => SizedBox(
+        width: 150.0,
+        height: 50.0,
+        child: ElevatedButton.icon(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const ListReactionPage()));
+          },
+          icon: const Icon(Icons.add),
+          label: const Text(
+            "Reaction",
+          ),
+        ),
+      );
+
+  /// Widget action & reaction button action SizedBox
+  Widget buildActionReactionButtonAction() => SizedBox(
+        width: 150.0,
+        height: 50.0,
+        child: ElevatedButton.icon(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const ListActionPage()));
+          },
+          icon: const Icon(Icons.add),
+          label: const Text(
+            "Action",
+          ),
+        ),
+      );
 }

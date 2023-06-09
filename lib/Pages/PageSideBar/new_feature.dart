@@ -3,14 +3,14 @@ import 'package:eip_test/Elements/SideBar/navigation_drawer.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/material.dart';
 
-class CameraPage extends StatefulWidget {
-  const CameraPage({Key? key}) : super(key: key);
+class NewFeature extends StatefulWidget {
+  const NewFeature({Key? key}) : super(key: key);
 
   @override
-  State<CameraPage> createState() => CameraPageState();
+  State<NewFeature> createState() => NewFeatureState();
 }
 
-class CameraPageState extends State<CameraPage> {
+class NewFeatureState extends State<NewFeature> {
   final GlobalKey<ScaffoldState> drawerScaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -21,7 +21,7 @@ class CameraPageState extends State<CameraPage> {
       },
       child: Scaffold(
         backgroundColor: MyColor().myGrey,
-        appBar: MyAppBar(title: "Camera", drawerScaffoldKey: drawerScaffoldKey),
+        appBar: MyAppBar(title: "NewFeature", drawerScaffoldKey: drawerScaffoldKey),
         body: Scaffold(
           backgroundColor: MyColor().myGrey,
           key: drawerScaffoldKey,

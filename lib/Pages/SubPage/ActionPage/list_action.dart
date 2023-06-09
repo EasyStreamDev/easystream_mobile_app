@@ -35,40 +35,9 @@ class ListActionPageState extends State<ListActionPage> {
             children: <Widget>[
               Column(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 30,bottom: 30),
-                    child: Text(
-                      "Select an Action :",
-                      style: TextStyle(color: Colors.white, fontSize: 30),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10,bottom: 10),
-                    child: RichText(
-                      text: TextSpan(
-                        text: 'WordDetection',
-                        style: const TextStyle(color: Colors.white, fontSize: 15),
-                        recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WordDetectionPage()));
-                        }
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10,bottom: 10),
-                    child: RichText(
-                      text: TextSpan(
-                        text: 'Key Pressed',
-                        style: const TextStyle(color: Colors.white, fontSize: 15),
-                        recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WordDetectionPage()));
-                          // Go to KeyPressed page
-                        }
-                      ),
-                    ),
-                  ),
+                  buildListActionTitle(),
+                  buildWordDetection(),
+                  buildKeyPressed(),
                 ],
               ),
             ],
@@ -77,4 +46,44 @@ class ListActionPageState extends State<ListActionPage> {
       ),
     );
   }
+
+  /// Widget list action title Padding
+  Widget buildListActionTitle() => const Padding(
+        padding: EdgeInsets.only(top: 30, bottom: 30),
+        child: Text(
+          "Select an Action :",
+          style: TextStyle(color: Colors.white, fontSize: 30),
+        ),
+      );
+
+  /// Widget list action worddetection Padding
+  Widget buildWordDetection() => Padding(
+        padding: const EdgeInsets.only(top: 10, bottom: 10),
+        child: RichText(
+          text: TextSpan(
+              text: 'WordDetection',
+              style: const TextStyle(color: Colors.white, fontSize: 15),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const WordDetectionPage()));
+                }),
+        ),
+      );
+
+  /// Widget list action key pressed Padding
+  Widget buildKeyPressed() => Padding(
+        padding: const EdgeInsets.only(top: 10, bottom: 10),
+        child: RichText(
+          text: TextSpan(
+              text: 'Key Pressed',
+              style: const TextStyle(color: Colors.white, fontSize: 15),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  // TODO: do the KeyPressedPage
+                  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WordDetectionPage()));
+                  // Go to KeyPressed page
+                }),
+        ),
+      );
 }

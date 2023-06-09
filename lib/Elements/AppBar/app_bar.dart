@@ -18,15 +18,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(title),
       automaticallyImplyLeading: false,
       actions: [
-        IconButton(
-          onPressed: () {
-            globals.reactionlist.clear();
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (_) => const LoginPage()),
-            );
-          },
-          icon: const Icon(Icons.switch_account),
-        ),
+        buildDisconnectButton(context),
       ],
       leading: Builder(
         builder: (BuildContext context) {
@@ -46,8 +38,20 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+  /// Widget disconnect button IconButton
+  ///
+  /// @param [context] is the context of the Widget
+  Widget buildDisconnectButton(BuildContext context) => IconButton(
+        onPressed: () {
+          globals.reactionlist.clear();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const LoginPage()),
+          );
+        },
+        icon: const Icon(Icons.switch_account),
+      );
+
   @override
   Size get preferredSize => const Size.fromHeight(60.0);
-
 }
-

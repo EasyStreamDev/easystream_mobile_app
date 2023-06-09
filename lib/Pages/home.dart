@@ -30,24 +30,29 @@ class HomePageState extends State<HomePage> {
           body: SingleChildScrollView(
               child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 60.0, bottom: 60.0),
-                child: Center(
-                  child: Container(
-                      decoration: BoxDecoration(
-                          color: MyColor().myOrange,
-                          borderRadius: BorderRadius.circular(10)),
-                      width: 200,
-                      height: 100,
-                      child: Image.asset(
-                        'assets/images/logo_easystream_orange.png',
-                      )),
-                ),
-              ),
+              buildLogo(),
             ],
           )),
         ),
       ),
     );
   }
+
+  /// Widget logo
+  Widget buildLogo() => Padding(
+        padding: const EdgeInsets.only(top: 60.0, bottom: 60.0),
+        child: Center(
+          child: Container(
+            decoration: BoxDecoration(
+              color: MyColor().myOrange,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            width: 200,
+            height: 100,
+            child: Image.asset(
+              'assets/images/logo_easystream_orange.png',
+            ),
+          ),
+        ),
+      );
 }

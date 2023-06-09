@@ -18,7 +18,7 @@ class ListReactionPageState extends State<ListReactionPage> {
 
   @override
   void initState() {
-    for (int i = 0; i < nbrReaction; i++) {
+    for (int index = 0; index < nbrReaction; index++) {
       _widgetBoxListReaction.add(
         Padding(
           padding: const EdgeInsets.only(
@@ -36,51 +36,9 @@ class ListReactionPageState extends State<ListReactionPage> {
             ),
             child: Column(
               children: <Widget>[
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: globals.reactionlist[i].name,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'Reaction: ',
-                      ),
-                      TextSpan(
-                        text: globals.reactionlist[i].reaction.toLowerCase(),
-                        style: TextStyle(
-                            color: MyColor().myOrange,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'Parameter: ',
-                      ),
-                      TextSpan(
-                        text: globals.reactionlist[i].parameter,
-                        style: TextStyle(
-                            color: MyColor().myOrange,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
+                builReactionTitle(index),
+                buildReaction(index),
+                buildReactionParameter(index),
               ],
             ),
           ),
@@ -116,15 +74,69 @@ class ListReactionPageState extends State<ListReactionPage> {
             )
           ]),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const AddReactionPage()));
-          },
-          backgroundColor: MyColor().myOrange,
-          child: const Icon(Icons.add),
-        ),
+        floatingActionButton: buildFloatingActionButton(),
       ),
     );
   }
+
+  /// Widget reaction title RichText
+  Widget builReactionTitle(int index) => RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: globals.reactionlist[index].name,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+              ),
+            ),
+          ],
+        ),
+      );
+
+  /// Widget reaction RichText
+  Widget buildReaction(int index) => RichText(
+        text: TextSpan(
+          children: [
+            const TextSpan(
+              text: 'Reaction: ',
+            ),
+            TextSpan(
+              text: globals.reactionlist[index].reaction.toLowerCase(),
+              style: TextStyle(
+                  color: MyColor().myOrange,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      );
+
+  /// Widget reaction parameter RichText
+  Widget buildReactionParameter(int index) => RichText(
+        text: TextSpan(
+          children: [
+            const TextSpan(
+              text: 'Parameter: ',
+            ),
+            TextSpan(
+              text: globals.reactionlist[index].parameter,
+              style: TextStyle(
+                  color: MyColor().myOrange,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      );
+
+  /// Widget list reaction floating action button FloatingActionButton
+  Widget buildFloatingActionButton() => FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const AddReactionPage()));
+        },
+        backgroundColor: MyColor().myOrange,
+        child: const Icon(Icons.add),
+      );
 }

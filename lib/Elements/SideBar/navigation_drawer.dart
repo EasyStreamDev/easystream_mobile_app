@@ -1,8 +1,5 @@
-import 'package:eip_test/Pages/PageSideBar/camera.dart';
-import 'package:eip_test/Pages/PageSideBar/event.dart';
-import 'package:eip_test/Pages/PageSideBar/compressor.dart';
-import 'package:eip_test/Pages/PageSideBar/scene.dart';
 import 'package:eip_test/Pages/PageSideBar/action_reaction.dart';
+import 'package:eip_test/Pages/PageSideBar/compressor.dart';
 import 'package:eip_test/Pages/home.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +13,7 @@ class NavigationDrawerWidget extends StatelessWidget {
     return Drawer(
       child: Material(
         color: MyColor().myGrey,
-        child: ListView (
+        child: ListView(
           children: <Widget>[
             const SizedBox(height: 12),
             buildMenuItem(
@@ -32,27 +29,9 @@ class NavigationDrawerWidget extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             buildMenuItem(
-              text: "Camera",
-              icon: Icons.videocam,
-              onClicked: () => selectedItem(context, 2),
-            ),
-            const SizedBox(height: 12),
-            buildMenuItem(
-              text: "Scenes",
-              icon: Icons.addchart,
-              onClicked: () => selectedItem(context, 3),
-            ),
-            const SizedBox(height: 12),
-            buildMenuItem(
-              text: "Events",
-              icon: Icons.emoji_events,
-              onClicked: () => selectedItem(context, 4),
-            ),
-            const SizedBox(height: 12),
-            buildMenuItem(
               text: "Action & Reaction",
               icon: Icons.add_reaction,
-              onClicked: () => selectedItem(context, 5),
+              onClicked: () => selectedItem(context, 2),
             ),
           ],
         ),
@@ -60,6 +39,12 @@ class NavigationDrawerWidget extends StatelessWidget {
     );
   }
 
+  /// Widget menu item Widget
+  /// 
+  /// @param :
+  /// [text] name of the page
+  /// [icon] Icon of the page
+  /// [onClicked] Callback to get the click
   Widget buildMenuItem({
     required String text,
     required IconData icon,
@@ -79,22 +64,16 @@ class NavigationDrawerWidget extends StatelessWidget {
   selectedItem(BuildContext context, int i) {
     switch (i) {
       case 0:
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const HomePage()));
         break;
       case 1:
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MicroPage()));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const CompressorPage()));
         break;
       case 2:
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CameraPage()));
-        break;
-      case 3:
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ScenePage()));
-        break;
-      case 4:
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const EventPage()));
-        break;
-      case 5:
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ActionReactionPage()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const ActionReactionPage()));
         break;
     }
   }

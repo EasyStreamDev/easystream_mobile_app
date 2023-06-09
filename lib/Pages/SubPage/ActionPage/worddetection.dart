@@ -56,8 +56,8 @@ Future<void> setActionReactionToggleAudioCompressor(
   }
 }
 
-Future<void> setActionReactionStartRec(List<String> actionParams,
-    String reactionName, int reactionDelay) async {
+Future<void> setActionReactionStartRec(
+    List<String> actionParams, String reactionName, int reactionDelay) async {
   Map<String, dynamic> msg = {
     "command": "setActionReaction",
     "params": {
@@ -79,8 +79,8 @@ Future<void> setActionReactionStartRec(List<String> actionParams,
   }
 }
 
-Future<void> setActionReactionStopRec(List<String> actionParams,
-    String reactionName, int reactionDelay) async {
+Future<void> setActionReactionStopRec(
+    List<String> actionParams, String reactionName, int reactionDelay) async {
   Map<String, dynamic> msg = {
     "command": "setActionReaction",
     "params": {
@@ -102,8 +102,8 @@ Future<void> setActionReactionStopRec(List<String> actionParams,
   }
 }
 
-Future<void> setActionReactionStartStream(List<String> actionParams,
-    String reactionName, int reactionDelay) async {
+Future<void> setActionReactionStartStream(
+    List<String> actionParams, String reactionName, int reactionDelay) async {
   Map<String, dynamic> msg = {
     "command": "setActionReaction",
     "params": {
@@ -125,8 +125,8 @@ Future<void> setActionReactionStartStream(List<String> actionParams,
   }
 }
 
-Future<void> setActionReactionStopStream(List<String> actionParams,
-    String reactionName, int reactionDelay) async {
+Future<void> setActionReactionStopStream(
+    List<String> actionParams, String reactionName, int reactionDelay) async {
   Map<String, dynamic> msg = {
     "command": "setActionReaction",
     "params": {
@@ -168,7 +168,6 @@ class WordDetectionPageState extends State<WordDetectionPage> {
 
   @override
   void initState() {
-    debugPrint("initState WordDetection");
     if (globals.reactionlist.isNotEmpty) {
       _dropdownvalue =
           globals.reactionlist[globals.reactionlist.length - 1].name;
@@ -203,171 +202,184 @@ class WordDetectionPageState extends State<WordDetectionPage> {
               const SizedBox(
                 height: 50,
               ),
-              Padding(
-                // Text Field Insert Keywords
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: TextField(
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: MyColor().myOrange),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(width: 2, color: MyColor().myOrange),
-                    ),
-                    labelText: 'Insert keywords...',
-                    labelStyle: const TextStyle(color: Colors.white),
-                  ),
-                  onSubmitted: (value) {
-                    setState(
-                      () {
-                        _actionParams.add(value);
-                      },
-                    );
-                  },
-                ),
-              ),
+              buildFieldInsertKeywords(),
               const SizedBox(
                 height: 20,
               ),
-              if (_actionParams.isNotEmpty)
-                SizedBox(
-                  // SizeBox Keywords
-                  height: 150,
-                  child: ListView.builder(
-                    itemExtent: 40.0,
-                    itemCount: _actionParams.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "     " + _actionParams[index],
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              if (_actionParams.isEmpty)
-                const SizedBox(
-                  // SizeBox Keywords empty
-                  height: 150,
-                ),
+              if (_actionParams.isNotEmpty) buildKeywordsList(),
+              if (_actionParams.isEmpty) buildKeywordsListEmpty(),
               const SizedBox(
                 height: 50,
               ),
-              const Row(
-                // Text Select a Reaction
-                children: [
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Select a Reaction :",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                // DropDown Select a Reaction
-                children: [
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: DropdownButton(
-                      underline: Container(
-                        height: 2,
-                        color: MyColor().myOrange,
-                      ),
-                      dropdownColor: MyColor().myGrey,
-                      value: _dropdownvalue,
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      iconEnabledColor: MyColor().myOrange,
-                      items: _reactionName.map(
-                        (items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: Text(
-                              items,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 16),
-                            ),
-                          );
-                        },
-                      ).toList(),
-                      onChanged: (String? selectedValue) {
-                        setState(
-                          () {
-                            _dropdownvalue = selectedValue!;
-                            _reactionName.remove(
-                              selectedValue.toString(),
-                            );
-                            _reactionName.insert(
-                              0,
-                              selectedValue.toString(),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
+              buildSelectReactionTitle(),
+              buildSelectReactionDropDown(),
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            for (int i = 0; i < globals.reactionlist.length; i++) {
-              if (globals.reactionlist[i].name == _dropdownvalue) {
-                _reactionParams = globals.reactionlist[i].parameter;
-                _reactionType = globals.reactionlist[i].reaction;
-              }
-            }
-            if (_reactionType == "SCENE_SWITCH") {
-              _reactionScene = _reactionParams;
-              await setActionReactionSceneSwitch(
-                  _actionParams, _dropdownvalue, _reactionScene);
-            }
-            // if (_reactionType == "TOGGLE_AUDIO_COMPRESSOR") {
-            //   await setActionReactionToggleAudioCompressor(_actionParams, _dropdownvalue);
-            // }
-            if (_reactionType == "START_REC") {
-              _reactionDelay = int.parse(_reactionParams);
-              await setActionReactionStartRec(_actionParams, _dropdownvalue, _reactionDelay);
-            }
-            if (_reactionType == "STOP_REC") {
-              _reactionDelay = int.parse(_reactionParams);
-              await setActionReactionStopRec(_actionParams, _dropdownvalue, _reactionDelay);
-            }
-            if (_reactionType == "START_STREAM") {
-              _reactionDelay = int.parse(_reactionParams);
-              await setActionReactionStartStream(_actionParams, _dropdownvalue, _reactionDelay);
-            }
-            if (_reactionType == "STOP_STREAM") {
-              _reactionDelay = int.parse(_reactionParams);
-              await setActionReactionStopStream(_actionParams, _dropdownvalue,_reactionDelay);
-            }
-            FocusManager.instance.primaryFocus?.unfocus();
-            Navigator.pop(context);
-            Navigator.pop(context);
-            Navigator.pop(context);
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const ActionReactionPage()));
-          },
-          backgroundColor: MyColor().myOrange,
-          child: const Icon(Icons.save),
-        ),
+        floatingActionButton: buildFloatingActionButton(),
       ),
     );
   }
+
+  /// Widget worddetection field insert keywords Padding
+  Widget buildFieldInsertKeywords() => Padding(
+        // Text Field Insert Keywords
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: TextField(
+          style: const TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: MyColor().myOrange),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 2, color: MyColor().myOrange),
+            ),
+            labelText: 'Insert keywords...',
+            labelStyle: const TextStyle(color: Colors.white),
+          ),
+          onSubmitted: (value) {
+            setState(
+              () {
+                _actionParams.add(value);
+              },
+            );
+          },
+        ),
+      );
+
+  /// Widget worddetecion list of keywords SizedBox
+  Widget buildKeywordsList() => SizedBox(
+        height: 150,
+        child: ListView.builder(
+          itemExtent: 40.0,
+          itemCount: _actionParams.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "     " + _actionParams[index],
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            );
+          },
+        ),
+      );
+
+  /// Widget worddetecion list of keywords empty SizedBox
+  Widget buildKeywordsListEmpty() => const SizedBox(
+        height: 150,
+      );
+
+  /// Widget worddetection select reaction title Row
+  Widget buildSelectReactionTitle() => const Row(
+        children: [
+          SizedBox(
+            width: 20,
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Select a Reaction :",
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+        ],
+      );
+
+  /// Widget worddetection select reaction dropdown Row
+  Widget buildSelectReactionDropDown() => Row(
+        children: [
+          const SizedBox(
+            width: 20,
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: DropdownButton(
+              underline: Container(
+                height: 2,
+                color: MyColor().myOrange,
+              ),
+              dropdownColor: MyColor().myGrey,
+              value: _dropdownvalue,
+              icon: const Icon(Icons.keyboard_arrow_down),
+              iconEnabledColor: MyColor().myOrange,
+              items: _reactionName.map(
+                (items) {
+                  return DropdownMenuItem(
+                    value: items,
+                    child: Text(
+                      items,
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  );
+                },
+              ).toList(),
+              onChanged: (String? selectedValue) {
+                setState(
+                  () {
+                    _dropdownvalue = selectedValue!;
+                    _reactionName.remove(
+                      selectedValue.toString(),
+                    );
+                    _reactionName.insert(
+                      0,
+                      selectedValue.toString(),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      );
+
+  /// Widget worddetecion floating action button FloatingActionButton
+  Widget buildFloatingActionButton() => FloatingActionButton(
+        onPressed: () async {
+          for (int i = 0; i < globals.reactionlist.length; i++) {
+            if (globals.reactionlist[i].name == _dropdownvalue) {
+              _reactionParams = globals.reactionlist[i].parameter;
+              _reactionType = globals.reactionlist[i].reaction;
+            }
+          }
+          if (_reactionType == "SCENE_SWITCH") {
+            _reactionScene = _reactionParams;
+            await setActionReactionSceneSwitch(
+                _actionParams, _dropdownvalue, _reactionScene);
+          }
+          // if (_reactionType == "TOGGLE_AUDIO_COMPRESSOR") {
+          //   await setActionReactionToggleAudioCompressor(_actionParams, _dropdownvalue);
+          // }
+          if (_reactionType == "START_REC") {
+            _reactionDelay = int.parse(_reactionParams);
+            await setActionReactionStartRec(
+                _actionParams, _dropdownvalue, _reactionDelay);
+          }
+          if (_reactionType == "STOP_REC") {
+            _reactionDelay = int.parse(_reactionParams);
+            await setActionReactionStopRec(
+                _actionParams, _dropdownvalue, _reactionDelay);
+          }
+          if (_reactionType == "START_STREAM") {
+            _reactionDelay = int.parse(_reactionParams);
+            await setActionReactionStartStream(
+                _actionParams, _dropdownvalue, _reactionDelay);
+          }
+          if (_reactionType == "STOP_STREAM") {
+            _reactionDelay = int.parse(_reactionParams);
+            await setActionReactionStopStream(
+                _actionParams, _dropdownvalue, _reactionDelay);
+          }
+          FocusManager.instance.primaryFocus?.unfocus();
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const ActionReactionPage()));
+        },
+        backgroundColor: MyColor().myOrange,
+        child: const Icon(Icons.save),
+      );
 }

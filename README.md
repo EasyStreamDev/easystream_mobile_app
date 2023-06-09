@@ -58,7 +58,7 @@ mobile-app/lib/
 ### Login and Home Page :
 ![1 - Login Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/c408d9cb-b971-411f-a65b-ae8ed46a8e4c)
 ![2 - Home Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/5a443532-30e7-479d-9e7e-58bd0873150a)
-![3 - Navigation side bar](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/b6936255-1af4-4376-8d02-ddc528400cf5)
+![3 - Navigation side bar](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/6cd3d001-d31d-4f94-9522-fff12de7cd4d)
 
 ### Compressor Page :
 ![4 - Compressor Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/7b23c117-ca61-44b1-bee8-2e33c98961a9)

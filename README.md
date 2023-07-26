@@ -57,6 +57,9 @@ mobile-app/lib/
   - create reaction with a name, the reaction and a parameter
   - link the created reaction to an action
 
+### Subtitle :
+  - activate subtitles on a text field
+
 ## Screenshots
 
 ### Login and Home Page :
@@ -75,3 +78,9 @@ mobile-app/lib/
 ![5 1 1 - Add Reaction subPage](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/8e13da66-9cb8-40e2-b7ff-c8292b3613bd)
 ![5 2 0 - List of Action subPage](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/22345e8c-aa69-47a0-9a7c-c48a80cf3c23)
 ![5 2 1 - WordDetection subPage](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/7f32cc99-fed1-43f2-acd5-8e6287b0d181)
+
+### Subtitle Page :
+![6 0 - Subtitle Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/4608edb6-0c34-4d35-b319-f7a64055bb55)
+
+### Subtitle subPage :
+![6 1 - Subtitle subPage](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/3a76c7b6-b2af-4e40-9b7c-fa1ff33663dc)

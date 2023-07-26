@@ -18,27 +18,31 @@ mobile-app/lib/
 ├──Elements
 |	├──AppBar/
 |	|	└──app_bar.dart					# custom app bar
+|	├──LoadingOverlay/
+|	|	└──loading_overlay.dart				# custom loading circular indicator
 |	├──SideBar/
 |	|	└──navigation_drawer.dart			# custom navigation side bar
 |	└──VolumeBar/
 |		└──volume_bar.dart				# custom volume bar
 ├──Pages/
 |	├──PageSideBar/
-|	|	└──action_reaction.dart				# page Action & Reaction
-|	|	└──compressor.dart				# page Compressor
+|	|	├──action_reaction.dart				# page Action & Reaction
+|	|	├──compressor.dart				# page Compressor
+|	|	└──subtitle.dart				# page Subtitle
 |	├──SubPage/
 |	|	├──ActionPage/
 |	|	|	└──list_action.dart			# sub page List Action
 |	|	|	└──worddetection.dart			# sub page WordDetection
-|	|	└──ReactionPage/
-|	|		└──add_reaction.dart			# sub page add reaction
-|	|		└──list_reaction.dart			# sub page list reaction
+|	|	├──ReactionPage/
+|	|	|	└──add_reaction.dart			# sub page add reaction
+|	|	|	└──list_reaction.dart			# sub page list reaction
+|	|	└──add_subtitle.dart				# sub page add subtitle
 |	├──home.dart						# page Home
 |	└──login.dart						# page Login
 ├──Styles/
 |	└──color.dart						# colors of the app
 ├──Tools/
-|	└──color_tool.dart					# tool apply color
+|	├──color_tool.dart					# tool apply color
 |	└──globals.dart						# tool variable globals
 └──main.dart							# <3 of the app
 ```

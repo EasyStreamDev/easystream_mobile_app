@@ -1,3 +1,4 @@
+import 'package:eip_test/Elements/LoadingOverlay/loading_overlay.dart';
 import 'package:eip_test/Pages/PageSideBar/action_reaction.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:eip_test/main.dart';
@@ -338,6 +339,7 @@ class WordDetectionPageState extends State<WordDetectionPage> {
   /// Widget worddetecion floating action button FloatingActionButton
   Widget buildFloatingActionButton() => FloatingActionButton(
         onPressed: () async {
+          LoadingOverlay.of(context).show();
           for (int i = 0; i < globals.reactionlist.length; i++) {
             if (globals.reactionlist[i].name == _dropdownvalue) {
               _reactionParams = globals.reactionlist[i].parameter;
@@ -372,6 +374,7 @@ class WordDetectionPageState extends State<WordDetectionPage> {
             await setActionReactionStopStream(
                 _actionParams, _dropdownvalue, _reactionDelay);
           }
+          LoadingOverlay.of(context).hide();
           FocusManager.instance.primaryFocus?.unfocus();
           Navigator.pop(context);
           Navigator.pop(context);

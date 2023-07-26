@@ -22,7 +22,11 @@ class ListReactionPageState extends State<ListReactionPage> {
       _widgetBoxListReaction.add(
         Padding(
           padding: const EdgeInsets.only(
-              left: 40.0, right: 40.0, top: 15.0, bottom: 15.0),
+            left: 40.0,
+            right: 40.0,
+            top: 15.0,
+            bottom: 15.0,
+          ),
           child: Container(
             padding: const EdgeInsets.all(10.0),
             height: 80.0,
@@ -36,7 +40,7 @@ class ListReactionPageState extends State<ListReactionPage> {
             ),
             child: Column(
               children: <Widget>[
-                builReactionTitle(index),
+                buildReactionTitle(index),
                 buildReaction(index),
                 buildReactionParameter(index),
               ],
@@ -80,7 +84,7 @@ class ListReactionPageState extends State<ListReactionPage> {
   }
 
   /// Widget reaction title RichText
-  Widget builReactionTitle(int index) => RichText(
+  Widget buildReactionTitle(int index) => RichText(
         text: TextSpan(
           children: [
             TextSpan(

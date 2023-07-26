@@ -7,3 +7,10 @@ class Reactions {
 }
 
 List<Reactions> reactionlist = [];
+
+class Subtitle {
+  late String name;
+  late String uuid;
+}
+
+List<Subtitle> subtitlelist = [];

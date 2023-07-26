@@ -1,8 +1,23 @@
 import 'package:eip_test/Client/client_server.dart';
+import 'package:eip_test/Elements/LoadingOverlay/loading_overlay.dart';
 import 'package:eip_test/Pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:eip_test/main.dart';
+
+Future<void> subscribeBroadcast() async {
+  Map<String, dynamic> msg = {
+    "command": "subscribeBroadcast",
+    "params": {
+      "enable": true,
+    }
+  };
+  tcpClient.sendMessage(msg);
+  await Future.delayed(const Duration(seconds: 2));
+  if (tcpClient.messages.isNotEmpty) {
+    tcpClient.messages.clear();
+  }
+}
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,6 +27,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
+  final GlobalKey<ScaffoldState> drawerScaffoldKey = GlobalKey<ScaffoldState>();
   String email = "";
   String password = "";
   static String ipAddress = "";
@@ -22,6 +38,7 @@ class LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+
     input.text = ipAddress;
   }
 
@@ -57,7 +74,7 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  /// Widget logo
+  /// Widget logo Padding
   Widget buildLogo() => Padding(
         padding: const EdgeInsets.only(top: 60.0, bottom: 35.0),
         child: Center(
@@ -83,7 +100,7 @@ class LoginPageState extends State<LoginPage> {
         ),
       );
 
-  /// Widget hidden ip address TextField
+  /// Widget hidden ip address text field Visibility
   Widget buildIpAddress() => Visibility(
         visible: isVisible,
         replacement: const SizedBox(
@@ -114,7 +131,7 @@ class LoginPageState extends State<LoginPage> {
         ),
       );
 
-  /// Widget email TextField
+  /// Widget email text field Padding
   Widget buildEmail() => Padding(
         padding: const EdgeInsets.only(
             left: 15.0, right: 15.0, top: 15.0, bottom: 0.0),
@@ -138,7 +155,7 @@ class LoginPageState extends State<LoginPage> {
         ),
       );
 
-  /// Widget password TextField
+  /// Widget password text field Padding
   Widget buildPassword() => Padding(
         padding: const EdgeInsets.only(
             left: 15.0, right: 15.0, top: 15.0, bottom: 15.0),
@@ -163,7 +180,7 @@ class LoginPageState extends State<LoginPage> {
         ),
       );
 
-  /// Widget forgot password Button
+  /// Widget forgot password button TextButton
   Widget buildForgotPassword() => TextButton(
         onPressed: () {
           //TODO FORGOT PASSWORD SCREEN GOES HERE
@@ -174,26 +191,35 @@ class LoginPageState extends State<LoginPage> {
         ),
       );
 
-  /// Widget login Button
+  /// Widget login button Container
   Widget buildLogin() => Container(
-        // Login Button
         height: 50,
         width: 250,
         decoration: BoxDecoration(
             color: MyColor().myOrange, borderRadius: BorderRadius.circular(20)),
         child: TextButton(
           onPressed: () async {
+            LoadingOverlay.of(context).show();
             _clientLogin = await login(email, password);
             if (_clientLogin != null) {
-              await createTcpClient(ipAddress).then((value) {
+              await createTcpClient(ipAddress).then((value) async {
                 if (value == true) {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) => const HomePage()));
+                  await subscribeBroadcast();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const LoadingOverlay(
+                        child: HomePage(),
+                      ),
+                    ),
+                  );
                 } else {
+                  LoadingOverlay.of(context).hide();
                   buildShowDialogError("Couldn't connect to the server OBS");
                 }
               });
             } else {
+              LoadingOverlay.of(context).hide();
               buildShowDialogError("Email or Password incorrect");
             }
           },
@@ -204,7 +230,7 @@ class LoginPageState extends State<LoginPage> {
         ),
       );
 
-  /// Widget new user Button
+  /// Widget new user button Text
   Widget buildNewUser() => const Text(
         // Create New User
         'New User? Create Account',

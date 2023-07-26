@@ -1,5 +1,7 @@
+import 'package:eip_test/Elements/LoadingOverlay/loading_overlay.dart';
 import 'package:eip_test/Pages/PageSideBar/action_reaction.dart';
 import 'package:eip_test/Pages/PageSideBar/compressor.dart';
+import 'package:eip_test/Pages/PageSideBar/subtitle.dart';
 import 'package:eip_test/Pages/home.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +35,12 @@ class NavigationDrawerWidget extends StatelessWidget {
               icon: Icons.add_reaction,
               onClicked: () => selectedItem(context, 2),
             ),
+            const SizedBox(height: 12),
+            buildMenuItem(
+              text: "Subtitle",
+              icon: Icons.subtitles,
+              onClicked: () => selectedItem(context, 3),
+            ),
           ],
         ),
       ),
@@ -40,7 +48,7 @@ class NavigationDrawerWidget extends StatelessWidget {
   }
 
   /// Widget menu item Widget
-  /// 
+  ///
   /// @param :
   /// [text] name of the page
   /// [icon] Icon of the page
@@ -64,16 +72,38 @@ class NavigationDrawerWidget extends StatelessWidget {
   selectedItem(BuildContext context, int i) {
     switch (i) {
       case 0:
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const HomePage()));
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const HomePage(),
+          ),
+        );
         break;
       case 1:
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const CompressorPage()));
+          MaterialPageRoute(
+            builder: (context) => const LoadingOverlay(
+              child: CompressorPage(),
+            ),
+          ),
+        );
         break;
       case 2:
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const ActionReactionPage()));
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const LoadingOverlay(
+              child: ActionReactionPage(),
+            ),
+          ),
+        );
+        break;
+      case 3:
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const LoadingOverlay(
+              child: SubtitlePage(),
+            ),
+          ),
+        );
         break;
     }
   }

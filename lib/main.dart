@@ -1,3 +1,4 @@
+import 'package:eip_test/Elements/LoadingOverlay/loading_overlay.dart';
 import 'package:eip_test/Pages/login.dart';
 import 'package:eip_test/Tools/color_tool.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ Future<bool> createTcpClient(String ipAddress) async {
       valueReturn = value;
     });
   } else {
-    await tcpClient.initialize("192.168.0.17", 47920).then((value) {
+    await tcpClient.initialize("192.168.1.40", 47920).then((value) {
       tcpClient.startClient();
       valueReturn = value;
     });
@@ -43,7 +44,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: buildMaterialColor(MyColor().myOrange),
         ),
-        home: const LoginPage(),
+        home: const LoadingOverlay(
+          child: LoginPage(),
+        ),
         debugShowCheckedModeBanner: false,
       ),
     );

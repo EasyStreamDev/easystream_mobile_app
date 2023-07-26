@@ -1,3 +1,4 @@
+import 'package:eip_test/Elements/LoadingOverlay/loading_overlay.dart';
 import 'package:eip_test/Pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:eip_test/Tools/globals.dart' as globals;
@@ -46,7 +47,11 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
           globals.reactionlist.clear();
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => const LoginPage()),
+            MaterialPageRoute(
+              builder: (_) => const LoadingOverlay(
+                child: LoginPage(),
+              ),
+            ),
           );
         },
         icon: const Icon(Icons.switch_account),

@@ -1,4 +1,5 @@
 import 'package:eip_test/Elements/AppBar/app_bar.dart';
+import 'package:eip_test/Elements/LoadingOverlay/loading_overlay.dart';
 import 'package:eip_test/Elements/SideBar/navigation_drawer.dart';
 import 'package:eip_test/Elements/VolumeBar/volume_bar.dart';
 import 'package:eip_test/Styles/color.dart';
@@ -169,7 +170,9 @@ class CompressorPageState extends State<CompressorPage> {
             backgroundColor: MyColor().myGrey,
             key: drawerScaffoldKey,
             drawer: const NavigationDrawerWidget(),
-            body: const Center(child: CircularProgressIndicator()),
+            body: const Center(
+              child: CircularProgressIndicator(),
+            ),
           ),
         ),
       );
@@ -177,7 +180,7 @@ class CompressorPageState extends State<CompressorPage> {
   }
 
   /// Widget compressor name Text
-  /// 
+  ///
   /// @param [index] is the current index in the list
   Widget builCompressorName(int index) => Text(
         micNameList[index],
@@ -185,7 +188,7 @@ class CompressorPageState extends State<CompressorPage> {
       );
 
   /// Widget compressor
-  /// 
+  ///
   /// @param [index] is the current index in the list
   Widget buildCompressor(int index) => Row(
         children: <Widget>[
@@ -195,7 +198,7 @@ class CompressorPageState extends State<CompressorPage> {
       );
 
   /// Widget compressor volume bar SizedBox
-  /// 
+  ///
   /// @param [index] is the current index in the list
   Widget buildCompressorVolumeBar(int index) => SizedBox(
         width: 300,
@@ -210,20 +213,22 @@ class CompressorPageState extends State<CompressorPage> {
       );
 
   /// Widget compressor mute button IconButton
-  /// 
+  ///
   /// @param [index] is the current index in the list
   Widget buildCompressorMuteButton(int index) => IconButton(
         onPressed: () {
-          setState(() {
-            micClickList[index] = !micClickList[index];
-          });
+          setState(
+            () {
+              micClickList[index] = !micClickList[index];
+            },
+          );
         },
         icon: Icon((micClickList[index] == true) ? Icons.mic : Icons.mic_off),
         color: MyColor().myWhite,
       );
 
   /// Widget compressor scrool view SingleChildScrollView
-  /// 
+  ///
   /// @param [widgetCompressor] is the list of Compressor
   Widget buildCompressorScrollView(List<Padding> widgetCompressor) =>
       SingleChildScrollView(
@@ -252,7 +257,9 @@ class CompressorPageState extends State<CompressorPage> {
                   height: 50.0,
                   child: ElevatedButton(
                     onPressed: () async {
+                      LoadingOverlay.of(context).show();
                       await setAllMics(_mics);
+                      LoadingOverlay.of(context).hide();
                     },
                     child: const Text("Save changes"),
                   ),

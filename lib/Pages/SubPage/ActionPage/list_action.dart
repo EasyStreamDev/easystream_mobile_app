@@ -1,3 +1,4 @@
+import 'package:eip_test/Elements/LoadingOverlay/loading_overlay.dart';
 import 'package:eip_test/Pages/SubPage/ActionPage/worddetection.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/gestures.dart';
@@ -61,13 +62,19 @@ class ListActionPageState extends State<ListActionPage> {
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: RichText(
           text: TextSpan(
-              text: 'WordDetection',
-              style: const TextStyle(color: Colors.white, fontSize: 15),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const WordDetectionPage()));
-                }),
+            text: 'WordDetection',
+            style: const TextStyle(color: Colors.white, fontSize: 15),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const LoadingOverlay(
+                      child: WordDetectionPage(),
+                    ),
+                  ),
+                );
+              },
+          ),
         ),
       );
 

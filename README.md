@@ -80,7 +80,7 @@ mobile-app/lib/
 ![5 2 1 - WordDetection subPage](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/7f32cc99-fed1-43f2-acd5-8e6287b0d181)
 
 ### Subtitle Page :
-![6 0 - Subtitle Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/ad137fda-2000-4a1d-a76a-113c193a28ae)
+![6 0 - Subtitle Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/4608edb6-0c34-4d35-b319-f7a64055bb55)
 
 ### Subtitle subPage :
-![6 1 - Subtitle subPage](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/b5d09fc0-c6fe-4e16-bfe0-f3b00ba76e1a)
+![6 1 - Subtitle subPage](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/3a76c7b6-b2af-4e40-9b7c-fa1ff33663dc)

@@ -18,7 +18,7 @@ https://developer.android.com/studio/install
 2) go to the file "pubspec.yaml" and clic on "Pub get" to get all the dependances
 3) go to the file "main.dart" and run the app with "Shift+F10"
 
-## Project Strucure
+## Project Structure
 
 ```
 mobile-app/lib/

@@ -7,6 +7,7 @@ EasyStream for mobile is an application built in flutter connected to OBS.
 ### Setup Flutter :
 A detailed guide for multiple platforms setup could be find :
 https://flutter.dev/docs/get-started/install/
+https://developer.android.com/studio/install
 
 ## Project Strucure
 

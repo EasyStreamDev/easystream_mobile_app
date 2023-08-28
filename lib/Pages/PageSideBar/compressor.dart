@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:eip_test/Elements/AppBar/app_bar.dart';
 import 'package:eip_test/Elements/LoadingOverlay/loading_overlay.dart';
 import 'package:eip_test/Elements/SideBar/navigation_drawer.dart';
@@ -6,12 +8,14 @@ import 'package:eip_test/Styles/color.dart';
 import 'package:eip_test/main.dart';
 import 'package:flutter/material.dart';
 
-List<bool> micClickList = List.generate(100, (index) => false);
-List<String> micNameList = List.generate(100, (index) => "null");
-List<double> micLevelList = List.generate(100, (index) => 0);
+List<bool> micClickList = List.empty();
+List<String> micNameList = List.empty();
+List<double> micLevelList = List.empty();
+List<MyVolumeBar> volumeBarList = List.empty();
 bool isLoading = true;
 
 Future<void> getAllMics() async {
+    debugPrint("Errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr 2");
   Map<String, dynamic> msg = {"command": "getAllMics"};
 
   tcpClient.sendMessage(msg);
@@ -57,11 +61,57 @@ List<dynamic> getMics() {
       return ([]);
     }
     List<dynamic> mics = requestResult["data"]["mics"];
+    debugPrint("Errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr 3");
+    micClickList = List.generate(requestResult.length, (index) => false);
+    micNameList = List.generate(requestResult.length, (index) => "null");
+    micLevelList = List.generate(requestResult.length, (index) => 0);
+    volumeBarList = List.generate(requestResult.length, (index) => MyVolumeBar(level: 0, onChange: const {}));
     for (int i = 0; i < mics.length; i++) {
       micClickList[i] = mics[i]["isActive"];
       micNameList[i] = mics[i]["micName"];
       micLevelList[i] = mics[i]["level"];
+      volumeBarList[i] = MyVolumeBar(level: micLevelList[i], onChange: (newVal) {micLevelList[i] = newVal;});
+      // volumeBarList[i].setCompressorLevel(micLevelList[i]);
     }
+    debugPrint("Errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr 4");
+    return (mics);
+  }
+}
+
+List<dynamic> getMicsUpdate() {
+  if (tcpClient.messages.isEmpty) {
+    debugPrint("There has been an error: tcp is empty");
+    return ([]);
+  } else {
+    var tmp = tcpClient.messages;
+    if (tmp.isEmpty) {
+      debugPrint("There has been an error: tmp is empty");
+      return ([]);
+    }
+    var requestResult = tmp[0];
+    if (tmp[0]["data"] == null) {
+      debugPrint("There has been an error: couldn't get the last data");
+      requestResult = tmp[1];
+    }
+    tcpClient.pop_front();
+    if (requestResult["data"] == null) {
+      debugPrint("There has been an error: requestResult is empty");
+      return ([]);
+    }
+    List<dynamic> mics = requestResult["data"]["mics"];
+    debugPrint("Errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr 3");
+    // micClickList = List.generate(requestResult.length, (index) => false);
+    // micNameList = List.generate(requestResult.length, (index) => "null");
+    // micLevelList = List.generate(requestResult.length, (index) => 0);
+    // volumeBarList = List.generate(requestResult.length, (index) => MyVolumeBar(level: 0, onChange: const {}));
+    for (int i = 0; i < mics.length; i++) {
+      micClickList[i] = mics[i]["isActive"];
+      micNameList[i] = mics[i]["micName"];
+      micLevelList[i] = mics[i]["level"];
+      volumeBarList[i].level = micLevelList[i];
+      // volumeBarList[i].setCompressorLevel(micLevelList[i]);
+    }
+    debugPrint("Errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr 4");
     return (mics);
   }
 }
@@ -76,22 +126,63 @@ class CompressorPage extends StatefulWidget {
 class CompressorPageState extends State<CompressorPage> {
   final GlobalKey<ScaffoldState> drawerScaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> _mics = [];
+  final StreamController<int> _streamController = StreamController<int>();
+  StreamSubscription<int>? _streamSubscription;
 
   @override
   void initState() {
     super.initState();
 
+    _runBackgroundTask();
+
     isLoading = true;
     _getDataMics();
+    debugPrint("Errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr 5");
   }
 
   _getDataMics() async {
+    debugPrint("Errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr 1");
     await getAllMics();
 
     setState(
       () => _mics = getMics(),
     );
     isLoading = false;
+  }
+
+  _getDataMicsUpdate() async {
+    debugPrint("Errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr 1");
+    await getAllMics();
+
+    setState(
+      () => _mics = getMicsUpdate(),
+    );
+    isLoading = false;
+  }
+
+  _runBackgroundTask() async {
+    _streamSubscription = Stream.periodic(const Duration(seconds: 1), (count) {
+      // Emit the current count through the stream
+      if (tcpClient.isBroadcast) {
+        // Future.delayed(const Duration(seconds: 2));
+        _streamController.add(count);
+        isLoading = true;
+        _getDataMicsUpdate();
+        debugPrint("Errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr 5");
+        tcpClient.isBroadcast = false;
+      }
+      return count;
+    }).listen((count) {
+
+      // Handle the emitted count here
+    });
+  }
+
+  @override
+  void dispose() {
+    _streamSubscription?.cancel();
+    _streamController.close();
+    super.dispose();
   }
 
   @override
@@ -202,14 +293,15 @@ class CompressorPageState extends State<CompressorPage> {
   /// @param [index] is the current index in the list
   Widget buildCompressorVolumeBar(int index) => SizedBox(
         width: 300,
-        child: MyVolumeBar(
-          level: micLevelList[index],
-          onChange: (newVal) {
-            setState(() {
-              micLevelList[index] = newVal;
-            });
-          },
-        ),
+        child: volumeBarList[index],
+        // MyVolumeBar(
+        //   level: micLevelList[index],
+        //   onChange: (newVal) {
+        //     setState(() {
+        //       micLevelList[index] = newVal;
+        //     });
+        //   },
+        // ),
       );
 
   /// Widget compressor mute button IconButton

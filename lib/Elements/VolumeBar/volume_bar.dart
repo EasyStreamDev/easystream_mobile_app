@@ -22,6 +22,7 @@ class MyVolumeBarState extends State<MyVolumeBar> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("LEVELEVELEVELEVELEVELEVELEVELEVELEVELEVEL : " + widget.level.toString());
     return Slider(
       value: currentSliderValue,
       max: 100,

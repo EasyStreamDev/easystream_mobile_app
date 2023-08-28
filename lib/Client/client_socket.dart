@@ -8,11 +8,13 @@ class Client {
   late Socket _socket;
   late TcpClient _client;
   final List<Map<String, dynamic>> _msg = [];
+  bool isBroadcast = false;
 
   Future<bool> initialize(String ip, int port) async {
     TcpClient.debug = false;
     try {
-      _client = await TcpClient.connect(ip, port, timeout: const Duration(seconds: 10));
+      _client = await TcpClient.connect(ip, port,
+          timeout: const Duration(seconds: 10));
       return true;
     } catch (e) {
       debugPrint("Couldn't initialize connection to OBS : " + e.toString());
@@ -36,7 +38,13 @@ class Client {
       });
       _client.stringStream.listen((event) {
         if (!event.contains("connected")) {
-          _msg.add(jsonDecode(event));
+          dynamic request = jsonDecode(event);
+          if (request["message"] == "BROADCAST") {
+            debugPrint("request[message] : " + request["message"].toString());
+            isBroadcast = true;
+          } else {
+            _msg.add(request);
+          }
           debugPrint("adding message");
         }
         debugPrint("[TCP CLIENT]: NEW MESSAGE ($event)");

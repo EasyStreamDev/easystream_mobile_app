@@ -37,6 +37,7 @@ dependencies:
   flutter_launcher_icons: ^0.10.0
   tcp_client_dart: ^0.2.0
   http: ^0.13.6
+  events_emitter: ^0.5.2
 
 flutter_icons:
   image_path: "assets/images/logo_easystream_application.png"

@@ -9,8 +9,9 @@ class Reactions {
 List<Reactions> reactionlist = [];
 
 class Subtitle {
-  late String name;
   late String uuid;
+  late int length;
+  late List<String> linkedMics;
 }
 
 List<Subtitle> subtitlelist = [];

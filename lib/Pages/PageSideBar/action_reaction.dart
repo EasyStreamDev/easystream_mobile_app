@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:eip_test/Elements/AppBar/app_bar.dart';
+import 'package:eip_test/Elements/LoadingOverlay/loading_overlay.dart';
 import 'package:eip_test/Elements/SideBar/navigation_drawer.dart';
 import 'package:eip_test/Pages/SubPage/ActionPage/list_action.dart';
 import 'package:eip_test/Pages/SubPage/ReactionPage/list_reaction.dart';
@@ -28,11 +31,13 @@ List<dynamic> getCouples() {
   } else {
     var tmp = tcpClient.messages;
     if (tmp.isEmpty) {
+      debugPrint("============== tmp : " + tmp.toString());
       debugPrint("There has been an error: tmp is empty");
       return ([]);
     }
     var requestResult = tmp[0];
     if (tmp[0]["data"] == null) {
+      debugPrint("============== tmp[0] : " + tmp[0]["data"].toString());
       debugPrint("There has been an error: couldn't get the last data");
       requestResult = tmp[1];
     }
@@ -87,6 +92,8 @@ class ActionReactionPage extends StatefulWidget {
 class ActionReactionPageState extends State<ActionReactionPage> {
   final GlobalKey<ScaffoldState> drawerScaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> _couples = [];
+  StreamSubscription<int>? _streamSubscription;
+  final StreamController<int> _streamController = StreamController<int>();
 
   @override
   void initState() {
@@ -94,15 +101,41 @@ class ActionReactionPageState extends State<ActionReactionPage> {
 
     isLoading = true;
     _getDataCouples();
+    _runBackgroundTask();
   }
 
   _getDataCouples() async {
     await getActReactCouples();
 
-    setState(
-      () => _couples = getCouples(),
-    );
+    if (mounted) {
+      setState(
+        () => _couples = getCouples(),
+      );
+    }
     isLoading = false;
+  }
+
+  _runBackgroundTask() async {
+    _streamSubscription = Stream.periodic(const Duration(seconds: 1), (count) {
+      if (tcpClient.isBroadcast) {
+        _streamController.add(count);
+        isLoading = true;
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) =>
+                const LoadingOverlay(child: ActionReactionPage())));
+        tcpClient.isBroadcast = false;
+      }
+      return count;
+    }).listen((count) {});
+  }
+
+  @override
+  void dispose() {
+    _streamSubscription?.cancel();
+    _streamController.close();
+    debugPrint(
+        "---------------------- I QUIT THE ACTION REACTION PAGE ----------------------");
+    super.dispose();
   }
 
   @override
@@ -191,7 +224,7 @@ class ActionReactionPageState extends State<ActionReactionPage> {
   }
 
   /// Widget action & reaction Container
-  /// 
+  ///
   /// @param [index] is the current index in the list
   Widget buildActionReaction(int index) => Container(
         padding: const EdgeInsets.all(10.0),
@@ -214,7 +247,7 @@ class ActionReactionPageState extends State<ActionReactionPage> {
       );
 
   /// Widget action & reaction action type RichText
-  /// 
+  ///
   /// @param [index] is the current index in the list
   Widget builActionReactionActionTypeText(int index) => RichText(
         text: TextSpan(
@@ -228,7 +261,7 @@ class ActionReactionPageState extends State<ActionReactionPage> {
       );
 
   /// Widget action & reaction action RichText
-  /// 
+  ///
   /// @param [index] is the current index in the list
   Widget builActionReactionActionText(int index) => RichText(
         text: TextSpan(
@@ -250,7 +283,7 @@ class ActionReactionPageState extends State<ActionReactionPage> {
       );
 
   /// Widget action & reaction reaction RichText
-  /// 
+  ///
   /// @param [index] is the current index in the list
   Widget builActionReactionReactionText(int index) => RichText(
         text: TextSpan(
@@ -282,7 +315,7 @@ class ActionReactionPageState extends State<ActionReactionPage> {
       );
 
   /// Widget action & reaction box scroll view SingleChildScrollView
-  /// 
+  ///
   /// @param [widgetBoxActionReaction] is the list of Action & Reaction
   Widget buildActionReactionBoxScrollView(
           List<Padding> widgetBoxActionReaction) =>

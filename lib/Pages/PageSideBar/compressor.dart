@@ -15,6 +15,7 @@ List<MyVolumeBar> volumeBarList = List.empty();
 bool isLoading = true;
 
 Future<void> getAllMics() async {
+  tcpClient.messages.clear();
   Map<String, dynamic> msg = {"command": "getAllMics"};
 
   tcpClient.sendMessage(msg);
@@ -63,12 +64,17 @@ List<dynamic> getMics() {
     micClickList = List.generate(requestResult.length, (index) => false);
     micNameList = List.generate(requestResult.length, (index) => "null");
     micLevelList = List.generate(requestResult.length, (index) => 0);
-    volumeBarList = List.generate(requestResult.length, (index) => MyVolumeBar(level: 0, onChange: const {}));
+    volumeBarList = List.generate(requestResult.length,
+        (index) => MyVolumeBar(level: 0, onChange: const {}));
     for (int i = 0; i < mics.length; i++) {
       micClickList[i] = mics[i]["isActive"];
       micNameList[i] = mics[i]["micName"];
       micLevelList[i] = mics[i]["level"];
-      volumeBarList[i] = MyVolumeBar(level: micLevelList[i], onChange: (newVal) {micLevelList[i] = newVal;});
+      volumeBarList[i] = MyVolumeBar(
+          level: micLevelList[i],
+          onChange: (newVal) {
+            micLevelList[i] = newVal;
+          });
     }
     return (mics);
   }
@@ -84,25 +90,26 @@ class CompressorPage extends StatefulWidget {
 class CompressorPageState extends State<CompressorPage> {
   final GlobalKey<ScaffoldState> drawerScaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> _mics = [];
-  final StreamController<int> _streamController = StreamController<int>();
   StreamSubscription<int>? _streamSubscription;
+  final StreamController<int> _streamController = StreamController<int>();
 
   @override
   void initState() {
     super.initState();
 
-    _runBackgroundTask();
-
     isLoading = true;
     _getDataMics();
+    _runBackgroundTask();
   }
 
   _getDataMics() async {
     await getAllMics();
 
-    setState(
-      () => _mics = getMics(),
-    );
+    if (mounted) {
+      setState(
+        () => _mics = getMics(),
+      );
+    }
     isLoading = false;
   }
 
@@ -111,20 +118,21 @@ class CompressorPageState extends State<CompressorPage> {
       if (tcpClient.isBroadcast) {
         _streamController.add(count);
         isLoading = true;
-        Navigator.pop(context);
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const CompressorPage()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) =>
+                const LoadingOverlay(child: CompressorPage())));
         tcpClient.isBroadcast = false;
       }
       return count;
-    }).listen((count) {
-    });
+    }).listen((count) {});
   }
 
   @override
   void dispose() {
     _streamSubscription?.cancel();
     _streamController.close();
+    debugPrint(
+        "---------------------- I QUIT THE COMPRESSOR PAGE ----------------------");
     super.dispose();
   }
 
@@ -262,7 +270,7 @@ class CompressorPageState extends State<CompressorPage> {
         color: MyColor().myWhite,
       );
 
-  /// Widget compressor scrool view SingleChildScrollView
+  /// Widget compressor scroll view SingleChildScrollView
   ///
   /// @param [widgetCompressor] is the list of Compressor
   Widget buildCompressorScrollView(List<Padding> widgetCompressor) =>

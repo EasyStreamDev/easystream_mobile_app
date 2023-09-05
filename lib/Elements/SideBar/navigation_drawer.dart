@@ -72,14 +72,14 @@ class NavigationDrawerWidget extends StatelessWidget {
   selectedItem(BuildContext context, int i) {
     switch (i) {
       case 0:
-        Navigator.of(context).push(
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => const HomePage(),
           ),
         );
         break;
       case 1:
-        Navigator.of(context).push(
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => const LoadingOverlay(
               child: CompressorPage(),
@@ -88,7 +88,7 @@ class NavigationDrawerWidget extends StatelessWidget {
         );
         break;
       case 2:
-        Navigator.of(context).push(
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => const LoadingOverlay(
               child: ActionReactionPage(),
@@ -97,7 +97,7 @@ class NavigationDrawerWidget extends StatelessWidget {
         );
         break;
       case 3:
-        Navigator.of(context).push(
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => const LoadingOverlay(
               child: SubtitlePage(),

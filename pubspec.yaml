@@ -38,6 +38,8 @@ dependencies:
   tcp_client_dart: ^0.2.0
   http: ^0.13.6
   events_emitter: ^0.5.2
+  multiselect: ^0.1.0
+  multi_select_flutter: ^4.1.3
 
 flutter_icons:
   image_path: "assets/images/logo_easystream_application.png"

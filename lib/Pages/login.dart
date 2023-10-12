@@ -1,9 +1,11 @@
 import 'package:eip_test/Client/client_server.dart';
 import 'package:eip_test/Elements/LoadingOverlay/loading_overlay.dart';
+import 'package:eip_test/Pages/SubPage/qr_code.dart';
 import 'package:eip_test/Pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:eip_test/main.dart';
+import 'package:eip_test/Tools/globals.dart' as globals;
 
 Future<void> subscribeBroadcast() async {
   Map<String, dynamic> msg = {
@@ -53,6 +55,17 @@ class LoginPageState extends State<LoginPage> {
         appBar: AppBar(
           title: const Text("Login Page"),
           automaticallyImplyLeading: false,
+          leading: IconButton(
+            onPressed: () async {
+              String result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const QrCode()));
+              if (result == "connected") {
+                buildShowDialogConnected("You are now connected to obs");
+              }
+            },
+            icon: const Icon(Icons.qr_code_2),
+          ),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -202,7 +215,7 @@ class LoginPageState extends State<LoginPage> {
             LoadingOverlay.of(context).show();
             _clientLogin = await login(email, password);
             if (_clientLogin != null) {
-              await createTcpClient(ipAddress).then((value) async {
+              await createTcpClient(globals.ipAddress).then((value) async {
                 if (value == true) {
                   await subscribeBroadcast();
                   Navigator.pushReplacement(
@@ -247,6 +260,27 @@ class LoginPageState extends State<LoginPage> {
           return AlertDialog(
             title: Text(
               "Error",
+              style: TextStyle(color: MyColor().myOrange),
+            ),
+            content: Text(
+              message,
+              style: TextStyle(color: MyColor().myOrange),
+            ),
+            backgroundColor: MyColor().myGrey,
+          );
+        },
+      );
+
+  /// Widget Future show dialog Error
+  ///
+  /// @param [message] to be printed
+  Future buildShowDialogConnected(String message) => showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Connected",
               style: TextStyle(color: MyColor().myOrange),
             ),
             content: Text(

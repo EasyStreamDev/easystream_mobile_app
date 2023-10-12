@@ -65,6 +65,9 @@ List<dynamic> getTextFields() {
       debugPrint("There has been an error: requestResult is empty");
       return ([]);
     }
+    if (requestResult["data"]["text_fields"] == null) {
+      return ([]);
+    }
     List<dynamic> textFields = requestResult["data"]["text_fields"];
     textFieldsNameList = List.generate(textFields.length, (index) => "");
     textFieldsUuidList = List.generate(textFields.length, (index) => "");
@@ -94,6 +97,9 @@ List<dynamic> getMics() {
     tcpClient.pop_front();
     if (requestResult["data"] == null) {
       debugPrint("There has been an error: requestResult is empty");
+      return ([]);
+    }
+    if (requestResult["data"]["mics"] == null) {
       return ([]);
     }
     List<dynamic> mics = requestResult["data"]["mics"];
@@ -135,27 +141,30 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
 
   _getDataTextFields() async {
     await getAllTextFields();
-
-    setState(
-      () => _textFields = getTextFields(),
-    );
-    dropdownTextFields = textFieldsNameList[0];
-    for (int i = 0; i < textFieldsNameList.length; i++) {
-      tmpNameTextFields.add(textFieldsNameList[i]);
+    if (mounted) {
+      setState(
+        () => _textFields = getTextFields(),
+      );
+      dropdownTextFields = textFieldsNameList[0];
+      for (int i = 0; i < textFieldsNameList.length; i++) {
+        tmpNameTextFields.add(textFieldsNameList[i]);
+      }
     }
   }
 
   _getDataMics() async {
     await getAllMics();
 
-    setState(
-      () => _mics = getMics(),
-    );
-    dropdownMics = micNameList[0];
-    for (int i = 0; i < micNameList.length; i++) {
-      tmpNameMics.add(micNameList[i]);
+    if (mounted) {
+      setState(
+        () => _mics = getMics(),
+      );
+      dropdownMics = micNameList[0];
+      for (int i = 0; i < micNameList.length; i++) {
+        tmpNameMics.add(micNameList[i]);
+      }
+      isLoading = false;
     }
-    isLoading = false;
   }
 
   @override
@@ -191,7 +200,7 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
               buildSelectMics(),
             ],
           ),
-          floatingActionButton: buildFloatingActionButton(),
+          floatingActionButton: buildFloatingSubtitle(),
         ),
       );
     } else if (_textFields.isEmpty && !isLoading) {
@@ -302,16 +311,20 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
                 },
               ).toList(),
               onChanged: (String? selectedValue) {
-                setState(() {
-                  dropdownTextFields = selectedValue!;
-                  tmpNameTextFields.remove(
-                    selectedValue.toString(),
+                if (mounted) {
+                  setState(
+                    () {
+                      dropdownTextFields = selectedValue!;
+                      tmpNameTextFields.remove(
+                        selectedValue.toString(),
+                      );
+                      tmpNameTextFields.insert(
+                        0,
+                        selectedValue.toString(),
+                      );
+                    },
                   );
-                  tmpNameTextFields.insert(
-                    0,
-                    selectedValue.toString(),
-                  );
-                });
+                }
               },
             ),
           )
@@ -358,9 +371,11 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
                     .toList(),
                 initialValue: micNameListToSend,
                 onConfirm: (values) {
-                  setState(() {
-                    micNameListToSend = values;
-                  });
+                  if (mounted) {
+                    setState(() {
+                      micNameListToSend = values;
+                    });
+                  }
                 },
                 // style
                 title: const Text(
@@ -390,10 +405,10 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
       );
 
   /// Widget add subtitle floating action button FloatingActionButton
-  Widget buildFloatingActionButton() => FloatingActionButton(
+  Widget buildFloatingSubtitle() => FloatingActionButton(
         onPressed: () async {
           globals.Subtitle subtitle = globals.Subtitle();
-          if (micNameListToSend.isNotEmpty) {
+          if (micNameListToSend.isNotEmpty && mounted) {
             for (int i = 0; i < textFieldsNameList.length; i++) {
               if (dropdownTextFields == textFieldsNameList[i]) {
                 subtitle.uuid = textFieldsUuidList[i];
@@ -405,15 +420,12 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
             await setSubtitles(
                 subtitle.uuid, subtitle.length, subtitle.linkedMics);
             LoadingOverlay.of(context).hide();
-
-            globals.subtitlelist.add(subtitle);
             Navigator.pop(context);
             Navigator.pop(context);
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
                     const LoadingOverlay(child: SubtitlePage())));
           } else {
-            LoadingOverlay.of(context).hide();
             buildShowDialogError("You have to select a mic");
           }
         },

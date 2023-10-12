@@ -9,6 +9,9 @@ class Client {
   late TcpClient _client;
   final List<Map<String, dynamic>> _msg = [];
   bool isBroadcast = false;
+  bool isCompressor = false;
+  bool isArea = false;
+  bool isSubtitle = false;
 
   Future<bool> initialize(String ip, int port) async {
     TcpClient.debug = false;
@@ -41,6 +44,16 @@ class Client {
           dynamic request = jsonDecode(event);
           if (request["message"] == "BROADCAST") {
             debugPrint("request[message] : " + request["message"].toString());
+            debugPrint("---------- "+ request["data"]["type"].toString() + " ----------");
+            if (request["data"]["type"] == "compressorSettingsChanged") {
+              isCompressor = true;
+            }
+            if (request["data"]["type"] == "areasChanged") {
+              isArea = true;
+            }
+            if (request["data"]["type"] == "subtitlesSettingsChanged") {
+              isSubtitle = true;
+            }
             isBroadcast = true;
           } else {
             _msg.add(request);

@@ -31,13 +31,11 @@ List<dynamic> getCouples() {
   } else {
     var tmp = tcpClient.messages;
     if (tmp.isEmpty) {
-      debugPrint("============== tmp : " + tmp.toString());
       debugPrint("There has been an error: tmp is empty");
       return ([]);
     }
     var requestResult = tmp[0];
     if (tmp[0]["data"] == null) {
-      debugPrint("============== tmp[0] : " + tmp[0]["data"].toString());
       debugPrint("There has been an error: couldn't get the last data");
       requestResult = tmp[1];
     }
@@ -46,36 +44,27 @@ List<dynamic> getCouples() {
       debugPrint("There has been an error: requestResult is empty");
       return ([]);
     }
+    if (requestResult["data"]["actReacts"] == null) {
+      return ([]);
+    }
     List<dynamic> couples = requestResult["data"]["actReacts"];
     nbrActionReaction = requestResult["data"]["length"];
-    debugPrint("nbrActionReaction : " + nbrActionReaction.toString());
-    debugPrint(couples.toString());
     for (int i = 0; i < couples.length; i++) {
       actionType[i] = couples[i]["action"]["type"];
-      debugPrint("actionType[" + i.toString() + "] : " + actionType[i]);
       for (int j = 0; j < couples[i]["action"]["params"]["words"].length; j++) {
         actionWords[i][j] = couples[i]["action"]["params"]["words"][j];
-        debugPrint("actionWords[" +
-            i.toString() +
-            "][" +
-            j.toString() +
-            "] : " +
-            actionWords[i][j]);
       }
       reactionType[i] = couples[i]["reaction"]["type"];
-      debugPrint("reactionType[" + i.toString() + "] : " + reactionType[i]);
       if (reactionType[i] == "SCENE_SWITCH") {
         reactionParams[i] = couples[i]["reaction"]["params"]["scene"];
       } else if (reactionType[i] == "START_REC" ||
           reactionType[i] == "STOP_REC" ||
           reactionType[i] == "START_STREAMING" ||
           reactionType[i] == "STOP_STREAMING") {
-        // reactionParams[i] = couples[i]["reaction"]["params"]["delay"].toString();
         reactionParams[i] = "";
       } else {
         reactionParams[i] = "";
       }
-      debugPrint("reactionParams[" + i.toString() + "] : " + reactionParams[i]);
     }
     if (couples.isEmpty) {}
     return (couples);
@@ -117,13 +106,14 @@ class ActionReactionPageState extends State<ActionReactionPage> {
 
   _runBackgroundTask() async {
     _streamSubscription = Stream.periodic(const Duration(seconds: 1), (count) {
-      if (tcpClient.isBroadcast) {
+      if (tcpClient.isBroadcast && tcpClient.isArea) {
         _streamController.add(count);
         isLoading = true;
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) =>
                 const LoadingOverlay(child: ActionReactionPage())));
         tcpClient.isBroadcast = false;
+        tcpClient.isArea = false;
       }
       return count;
     }).listen((count) {});
@@ -357,6 +347,10 @@ class ActionReactionPageState extends State<ActionReactionPage> {
         height: 50.0,
         child: ElevatedButton.icon(
           onPressed: () {
+            _streamSubscription?.cancel();
+            _streamController.close();
+            debugPrint(
+                "---------------------- I QUIT THE ACTION REACTION PAGE ----------------------");
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const ListReactionPage()));
           },
@@ -373,6 +367,10 @@ class ActionReactionPageState extends State<ActionReactionPage> {
         height: 50.0,
         child: ElevatedButton.icon(
           onPressed: () {
+            _streamSubscription?.cancel();
+            _streamController.close();
+            debugPrint(
+                "---------------------- I QUIT THE ACTION REACTION PAGE ----------------------");
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const ListActionPage()));
           },

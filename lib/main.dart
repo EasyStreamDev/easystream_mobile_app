@@ -3,7 +3,6 @@ import 'package:eip_test/Pages/login.dart';
 import 'package:eip_test/Tools/color_tool.dart';
 import 'package:flutter/material.dart';
 import 'Client/client_socket.dart';
-
 import 'Styles/color.dart';
 
 Client tcpClient = Client();
@@ -16,17 +15,17 @@ Future<bool> createTcpClient(String ipAddress) async {
   bool valueReturn = false;
 
   if (ipAddress.isNotEmpty) {
-    debugPrint(ipAddress);
     await tcpClient.initialize(ipAddress, 47920).then((value) {
       tcpClient.startClient();
       valueReturn = value;
     });
-  } else {
-    await tcpClient.initialize("192.168.1.40", 47920).then((value) {
-      tcpClient.startClient();
-      valueReturn = value;
-    });
   }
+  // } else {
+  //   await tcpClient.initialize("192.168.1.40", 47920).then((value) {
+  //     tcpClient.startClient();
+  //     valueReturn = value;
+  //   });
+  // }
   return valueReturn;
   // return true;
 }

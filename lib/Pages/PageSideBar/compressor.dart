@@ -115,13 +115,13 @@ class CompressorPageState extends State<CompressorPage> {
 
   _runBackgroundTask() async {
     _streamSubscription = Stream.periodic(const Duration(seconds: 1), (count) {
-      if (tcpClient.isBroadcast) {
+      if (tcpClient.isBroadcast && tcpClient.isCompressor) {
         _streamController.add(count);
         isLoading = true;
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) =>
-                const LoadingOverlay(child: CompressorPage())));
+            builder: (context) => const LoadingOverlay(child: CompressorPage())));
         tcpClient.isBroadcast = false;
+        tcpClient.isCompressor = false;
       }
       return count;
     }).listen((count) {});

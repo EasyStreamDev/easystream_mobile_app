@@ -39,6 +39,9 @@ List<dynamic> getSubtitlesSettings() {
       debugPrint("There has been an error: requestResult is empty");
       return ([]);
     }
+    if (requestResult["data"]["text_fields"] == null) {
+      return ([]);
+    }
     List<dynamic> subtitlesSettings = requestResult["data"]["text_fields"];
     textFieldsUuidList = List.generate(subtitlesSettings.length, (index) => "");
     textFieldsNameList = List.generate(subtitlesSettings.length, (index) => "");
@@ -93,12 +96,13 @@ class SubtitlePageState extends State<SubtitlePage> {
 
   _runBackgroundTask() async {
     _streamSubscription = Stream.periodic(const Duration(seconds: 1), (count) {
-      if (tcpClient.isBroadcast) {
+      if (tcpClient.isBroadcast && tcpClient.isSubtitle) {
         _streamController.add(count);
         isLoading = true;
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) => const LoadingOverlay(child: SubtitlePage())));
         tcpClient.isBroadcast = false;
+        tcpClient.isSubtitle = false;
       }
       return count;
     }).listen((count) {});
@@ -304,6 +308,10 @@ class SubtitlePageState extends State<SubtitlePage> {
   /// Widget subtitle floating action button FloatingActionButton
   Widget buildFloatingActionButton() => FloatingActionButton(
         onPressed: () {
+          _streamSubscription?.cancel();
+          _streamController.close();
+          debugPrint(
+              "---------------------- I QUIT THE SUBTITLE PAGE ----------------------");
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
                   const LoadingOverlay(child: AddSubtitlePage())));

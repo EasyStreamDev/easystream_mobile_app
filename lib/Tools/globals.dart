@@ -15,3 +15,6 @@ class Subtitle {
 }
 
 List<Subtitle> subtitlelist = [];
+
+String ipAddress = "";
+bool isConnected = false;

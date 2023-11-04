@@ -70,7 +70,6 @@ class SubtitlePageState extends State<SubtitlePage> {
   final GlobalKey<ScaffoldState> drawerScaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> _subtitlesSettings = [];
 
-  final List<Padding> _widgetBoxListSubtitle = [];
   StreamSubscription<int>? _streamSubscription;
   final StreamController<int> _streamController = StreamController<int>();
 
@@ -165,6 +164,11 @@ class SubtitlePageState extends State<SubtitlePage> {
             drawer: const NavigationDrawerWidget(),
             body: Stack(
               children: <Widget>[
+                Divider(
+                  height: 1,
+                  color: MyColor().myOrange,
+                  thickness: 1,
+                ),
                 buildSubtitleTitle(),
                 buildSubtitleScrollView(_widgetBoxListSubtitle),
               ],
@@ -186,9 +190,14 @@ class SubtitlePageState extends State<SubtitlePage> {
             backgroundColor: MyColor().myGrey,
             key: drawerScaffoldKey,
             drawer: const NavigationDrawerWidget(),
-            body: const Stack(
+            body: Stack(
               children: <Widget>[
-                Center(
+                Divider(
+                  height: 1,
+                  color: MyColor().myOrange,
+                  thickness: 1,
+                ),
+                const Center(
                   child: Text(
                     "No Subtitle to load",
                     style: TextStyle(color: Colors.white, fontSize: 18),
@@ -211,13 +220,21 @@ class SubtitlePageState extends State<SubtitlePage> {
           appBar:
               MyAppBar(title: "Subtitle", drawerScaffoldKey: drawerScaffoldKey),
           body: Scaffold(
-            backgroundColor: MyColor().myGrey,
-            key: drawerScaffoldKey,
-            drawer: const NavigationDrawerWidget(),
-            body: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
+              backgroundColor: MyColor().myGrey,
+              key: drawerScaffoldKey,
+              drawer: const NavigationDrawerWidget(),
+              body: Stack(
+                children: <Widget>[
+                  Divider(
+                    height: 1,
+                    color: MyColor().myOrange,
+                    thickness: 1,
+                  ),
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ],
+              )),
         ),
       );
     }
@@ -306,17 +323,28 @@ class SubtitlePageState extends State<SubtitlePage> {
       );
 
   /// Widget subtitle floating action button FloatingActionButton
-  Widget buildFloatingActionButton() => FloatingActionButton(
-        onPressed: () {
-          _streamSubscription?.cancel();
-          _streamController.close();
-          debugPrint(
-              "---------------------- I QUIT THE SUBTITLE PAGE ----------------------");
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  const LoadingOverlay(child: AddSubtitlePage())));
-        },
-        backgroundColor: MyColor().myOrange,
-        child: const Icon(Icons.add),
+  Widget buildFloatingActionButton() => Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+              color: MyColor().myOrange, width: 1.0), // Set border color and width
+          borderRadius: BorderRadius.circular(
+              30), // Optional: Set border radius for rounded corners
+        ),
+        child: FloatingActionButton(
+          backgroundColor: MyColor().backgroundCards,
+          child: Icon(
+            Icons.add,
+            color: MyColor().myWhite,
+          ),
+          onPressed: () {
+            _streamSubscription?.cancel();
+            _streamController.close();
+            debugPrint(
+                "---------------------- I QUIT THE SUBTITLE PAGE ----------------------");
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    const LoadingOverlay(child: AddSubtitlePage())));
+          },
+        ),
       );
 }

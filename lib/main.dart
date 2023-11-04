@@ -15,12 +15,13 @@ Future<bool> createTcpClient(String ipAddress) async {
   bool valueReturn = false;
 
   if (ipAddress.isNotEmpty) {
+    debugPrint("=== ip address : " + ipAddress + " ===");
     await tcpClient.initialize(ipAddress, 47920).then((value) {
       tcpClient.startClient();
       valueReturn = value;
     });
   }
-  // } else {
+  // else {
   //   await tcpClient.initialize("192.168.1.40", 47920).then((value) {
   //     tcpClient.startClient();
   //     valueReturn = value;

@@ -9,11 +9,14 @@ import 'package:eip_test/Styles/color.dart';
 import 'package:eip_test/main.dart';
 import 'package:flutter/material.dart';
 
-List<String> actionType = List.generate(100, (index) => "");
-List<List<String>> actionWords =
-    List.generate(100, (index) => List.generate(5, (index) => ""));
-List<String> reactionType = List.generate(100, (index) => "");
-List<String> reactionParams = List.generate(100, (index) => "");
+List<String> actionType = List.empty();
+List<String> actionKeys = List.empty();
+List<String> actionApps = List.empty();
+List<List<String>> actionWords = [];
+
+List<String> reactionType = List.empty();
+List<String> reactionParams = List.empty();
+
 int nbrActionReaction = 0;
 bool isLoading = true;
 
@@ -49,10 +52,34 @@ List<dynamic> getCouples() {
     }
     List<dynamic> couples = requestResult["data"]["actReacts"];
     nbrActionReaction = requestResult["data"]["length"];
+    if (nbrActionReaction == 0) {
+      return ([]);
+    }
+
+    actionType = List.generate(nbrActionReaction, (index) => "");
+    actionKeys = List.generate(nbrActionReaction, (index) => "");
+    actionApps = List.generate(nbrActionReaction, (index) => "");
+    actionWords = List.generate(nbrActionReaction, (index) => List.empty());
+
+    reactionType = List.generate(nbrActionReaction, (index) => "");
+    reactionParams = List.generate(nbrActionReaction, (index) => "");
+
     for (int i = 0; i < couples.length; i++) {
       actionType[i] = couples[i]["action"]["type"];
-      for (int j = 0; j < couples[i]["action"]["params"]["words"].length; j++) {
-        actionWords[i][j] = couples[i]["action"]["params"]["words"][j];
+      if (actionType[i] == "WORD_DETECT") {
+        actionWords[i] = List.generate(
+            couples[i]["action"]["params"]["words"].length, (index) => "");
+        for (int j = 0;
+            j < couples[i]["action"]["params"]["words"].length;
+            j++) {
+          actionWords[i][j] = couples[i]["action"]["params"]["words"][j];
+        }
+      }
+      if (actionType[i] == "KEY_PRESSED") {
+        actionKeys[i] = couples[i]["action"]["params"]["key"];
+      }
+      if (actionType[i] == "APP_LAUNCH") {
+        actionApps[i] = couples[i]["action"]["params"]["app_name"];
       }
       reactionType[i] = couples[i]["reaction"]["type"];
       if (reactionType[i] == "SCENE_SWITCH") {
@@ -148,11 +175,16 @@ class ActionReactionPageState extends State<ActionReactionPage> {
           appBar: MyAppBar(
               title: "Action & Reaction", drawerScaffoldKey: drawerScaffoldKey),
           body: Scaffold(
-            backgroundColor: MyColor().myGrey, // Background app
+            backgroundColor: MyColor().myGrey,
             key: drawerScaffoldKey,
             drawer: const NavigationDrawerWidget(),
             body: Stack(
               children: <Widget>[
+                Divider(
+                  height: 1,
+                  color: MyColor().myOrange,
+                  thickness: 1,
+                ),
                 buildActionReactionBoxScrollView(widgetBoxActionReaction),
                 buildActionReactionBottomButton(),
               ],
@@ -170,11 +202,16 @@ class ActionReactionPageState extends State<ActionReactionPage> {
           appBar: MyAppBar(
               title: "Action & Reaction", drawerScaffoldKey: drawerScaffoldKey),
           body: Scaffold(
-            backgroundColor: MyColor().myGrey, // Background app
+            backgroundColor: MyColor().myGrey,
             key: drawerScaffoldKey,
             drawer: const NavigationDrawerWidget(),
             body: Stack(
               children: <Widget>[
+                Divider(
+                  height: 1,
+                  color: MyColor().myOrange,
+                  thickness: 1,
+                ),
                 const Center(
                   child: Text(
                     "No Action & Reaction to load",
@@ -203,6 +240,11 @@ class ActionReactionPageState extends State<ActionReactionPage> {
             drawer: const NavigationDrawerWidget(),
             body: Stack(
               children: [
+                Divider(
+                  height: 1,
+                  color: MyColor().myOrange,
+                  thickness: 1,
+                ),
                 const Center(child: CircularProgressIndicator()),
                 buildActionReactionBottomButton(),
               ],
@@ -218,19 +260,25 @@ class ActionReactionPageState extends State<ActionReactionPage> {
   /// @param [index] is the current index in the list
   Widget buildActionReaction(int index) => Container(
         padding: const EdgeInsets.all(10.0),
-        height: 100.0,
+        height: 80.0,
         width: double.maxFinite,
         decoration: BoxDecoration(
+          color: MyColor().backgroundCards,
           border: Border.all(
-            color: MyColor().myWhite,
-            width: 1.5,
+            color: MyColor().myOrange,
+            width: 1,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(5)),
         ),
         child: Column(
           children: <Widget>[
             builActionReactionActionTypeText(index),
-            builActionReactionActionText(index),
+            if (actionType[index] == "WORD_DETECT")
+              builActionReactionActionWordsText(index),
+            if (actionType[index] == "KEY_PRESSED")
+              builActionReactionActionKeyText(index),
+            if (actionType[index] == "APP_LAUNCH")
+              builActionReactionActionAppText(index),
             builActionReactionReactionText(index),
           ],
         ),
@@ -253,7 +301,7 @@ class ActionReactionPageState extends State<ActionReactionPage> {
   /// Widget action & reaction action RichText
   ///
   /// @param [index] is the current index in the list
-  Widget builActionReactionActionText(int index) => RichText(
+  Widget builActionReactionActionWordsText(int index) => RichText(
         text: TextSpan(
           children: [
             const TextSpan(
@@ -268,6 +316,48 @@ class ActionReactionPageState extends State<ActionReactionPage> {
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
               ),
+          ],
+        ),
+      );
+
+  /// Widget action & reaction action RichText
+  ///
+  /// @param [index] is the current index in the list
+  Widget builActionReactionActionKeyText(int index) => RichText(
+        text: TextSpan(
+          children: [
+            const TextSpan(
+              text: 'Action: ',
+            ),
+            const TextSpan(text: "if you press : "),
+            TextSpan(
+              text: actionKeys[index] + ' ',
+              style: TextStyle(
+                  color: MyColor().myOrange,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      );
+
+  /// Widget action & reaction action RichText
+  ///
+  /// @param [index] is the current index in the list
+  Widget builActionReactionActionAppText(int index) => RichText(
+        text: TextSpan(
+          children: [
+            const TextSpan(
+              text: 'Action: ',
+            ),
+            const TextSpan(text: "if you launch : "),
+            TextSpan(
+              text: actionApps[index] + ' ',
+              style: TextStyle(
+                  color: MyColor().myOrange,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
           ],
         ),
       );
@@ -346,6 +436,20 @@ class ActionReactionPageState extends State<ActionReactionPage> {
         width: 150.0,
         height: 50.0,
         child: ElevatedButton.icon(
+          icon: Icon(
+            Icons.add,
+            color: MyColor().myWhite,
+          ),
+          label: Text(
+            "Reaction",
+            style: TextStyle(color: MyColor().myWhite),
+          ),
+          style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all<Color>(MyColor().backgroundCards),
+            side: MaterialStateProperty.all<BorderSide>(
+                BorderSide(color: MyColor().myOrange, width: 1)),
+          ),
           onPressed: () {
             _streamSubscription?.cancel();
             _streamController.close();
@@ -354,10 +458,6 @@ class ActionReactionPageState extends State<ActionReactionPage> {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const ListReactionPage()));
           },
-          icon: const Icon(Icons.add),
-          label: const Text(
-            "Reaction",
-          ),
         ),
       );
 
@@ -366,6 +466,20 @@ class ActionReactionPageState extends State<ActionReactionPage> {
         width: 150.0,
         height: 50.0,
         child: ElevatedButton.icon(
+          icon: Icon(
+            Icons.add,
+            color: MyColor().myWhite,
+          ),
+          label: Text(
+            "Action",
+            style: TextStyle(color: MyColor().myWhite),
+          ),
+          style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all<Color>(MyColor().backgroundCards),
+            side: MaterialStateProperty.all<BorderSide>(
+                BorderSide(color: MyColor().myOrange, width: 1)),
+          ),
           onPressed: () {
             _streamSubscription?.cancel();
             _streamController.close();
@@ -374,10 +488,6 @@ class ActionReactionPageState extends State<ActionReactionPage> {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const ListActionPage()));
           },
-          icon: const Icon(Icons.add),
-          label: const Text(
-            "Action",
-          ),
         ),
       );
 }

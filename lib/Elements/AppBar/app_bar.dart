@@ -1,5 +1,6 @@
 import 'package:eip_test/Elements/LoadingOverlay/loading_overlay.dart';
 import 'package:eip_test/Pages/login.dart';
+import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/material.dart';
 import 'package:eip_test/Tools/globals.dart' as globals;
 
@@ -16,7 +17,12 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title),
+      elevation: 0,
+      backgroundColor: MyColor().backgroundAppBar ,
+      title: Text(
+        title,
+        style: TextStyle(color: MyColor().myWhite)
+        ),
       automaticallyImplyLeading: false,
       actions: [
         buildDisconnectButton(context),
@@ -25,6 +31,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         builder: (BuildContext context) {
           return IconButton(
             icon: const Icon(Icons.menu),
+            color: MyColor().myWhite,
             onPressed: () {
               if (drawerScaffoldKey.currentState!.isDrawerOpen) {
                 Navigator.pop(context);
@@ -43,6 +50,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   ///
   /// @param [context] is the context of the Widget
   Widget buildDisconnectButton(BuildContext context) => IconButton(
+        icon: const Icon(Icons.switch_account),
+        color: MyColor().myWhite,
         onPressed: () {
           globals.reactionlist.clear();
           Navigator.pushReplacement(
@@ -54,7 +63,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           );
         },
-        icon: const Icon(Icons.switch_account),
       );
 
   @override

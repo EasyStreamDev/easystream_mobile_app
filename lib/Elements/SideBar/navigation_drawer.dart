@@ -2,6 +2,7 @@ import 'package:eip_test/Elements/LoadingOverlay/loading_overlay.dart';
 import 'package:eip_test/Pages/PageSideBar/action_reaction.dart';
 import 'package:eip_test/Pages/PageSideBar/compressor.dart';
 import 'package:eip_test/Pages/PageSideBar/subtitle.dart';
+import 'package:eip_test/Pages/PageSideBar/video_source.dart';
 import 'package:eip_test/Pages/home.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,12 @@ class NavigationDrawerWidget extends StatelessWidget {
               text: "Subtitle",
               icon: Icons.subtitles,
               onClicked: () => selectedItem(context, 3),
+            ),
+            const SizedBox(height: 12),
+            buildMenuItem(
+              text: "VideoSource",
+              icon: Icons.video_camera_front_outlined,
+              onClicked: () => selectedItem(context, 4),
             ),
           ],
         ),
@@ -101,6 +108,15 @@ class NavigationDrawerWidget extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => const LoadingOverlay(
               child: SubtitlePage(),
+            ),
+          ),
+        );
+        break;
+      case 4:
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const LoadingOverlay(
+              child: VideoSource(),
             ),
           ),
         );

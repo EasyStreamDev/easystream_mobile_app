@@ -1,14 +1,9 @@
 import 'dart:io';
-import 'package:eip_test/Elements/LoadingOverlay/loading_overlay.dart';
-import 'package:eip_test/Pages/login.dart';
 import 'package:eip_test/Tools/globals.dart' as globals;
 import 'package:eip_test/Styles/color.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-
-import 'package:console/console.dart' as console;
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:steel_crypt/steel_crypt.dart';
 
 class QRCodeData {
@@ -64,12 +59,18 @@ class QrCodeState extends State<QrCode> {
   Widget build(BuildContext context) => SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("QR Code"),
+            elevation: 0,
+            backgroundColor: MyColor().backgroundAppBar,
+            title: Text(
+              "QR Code",
+              style: TextStyle(color: MyColor().myWhite),
+            ),
             leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              color: MyColor().myWhite,
               onPressed: () {
                 Navigator.pop(context, "not connected");
               },
-              icon: const Icon(Icons.arrow_back),
             ),
             automaticallyImplyLeading: false,
           ),
@@ -86,8 +87,9 @@ class QrCodeState extends State<QrCode> {
   Widget buildResult() => Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
+          color: MyColor().backgroundCards,
           borderRadius: BorderRadius.circular(8),
-          color: MyColor().myOrange,
+          border: Border.all(color: MyColor().myOrange),
         ),
         child: Text(
           barcode != null

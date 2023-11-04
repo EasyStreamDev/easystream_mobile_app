@@ -119,7 +119,8 @@ class CompressorPageState extends State<CompressorPage> {
         _streamController.add(count);
         isLoading = true;
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => const LoadingOverlay(child: CompressorPage())));
+            builder: (context) =>
+                const LoadingOverlay(child: CompressorPage())));
         tcpClient.isBroadcast = false;
         tcpClient.isCompressor = false;
       }
@@ -157,7 +158,6 @@ class CompressorPageState extends State<CompressorPage> {
           return false;
         },
         child: Scaffold(
-            backgroundColor: MyColor().myGrey,
             appBar: MyAppBar(
                 title: "Compressor", drawerScaffoldKey: drawerScaffoldKey),
             body: Scaffold(
@@ -166,6 +166,11 @@ class CompressorPageState extends State<CompressorPage> {
               drawer: const NavigationDrawerWidget(),
               body: Stack(
                 children: <Widget>[
+                  Divider(
+                    height: 1,
+                    color: MyColor().myOrange,
+                    thickness: 1,
+                  ),
                   buildCompressorScrollView(widgetCompressor),
                   buildCompressorSaveButton(),
                 ],
@@ -185,9 +190,14 @@ class CompressorPageState extends State<CompressorPage> {
             backgroundColor: MyColor().myGrey,
             key: drawerScaffoldKey,
             drawer: const NavigationDrawerWidget(),
-            body: const Stack(
+            body: Stack(
               children: <Widget>[
-                Center(
+                Divider(
+                  height: 1,
+                  color: MyColor().myOrange,
+                  thickness: 1,
+                ),
+                const Center(
                   child: Text(
                     "No Compressor to load",
                     style: TextStyle(color: Colors.white, fontSize: 18),
@@ -209,13 +219,21 @@ class CompressorPageState extends State<CompressorPage> {
           appBar: MyAppBar(
               title: "Compressor", drawerScaffoldKey: drawerScaffoldKey),
           body: Scaffold(
-            backgroundColor: MyColor().myGrey,
-            key: drawerScaffoldKey,
-            drawer: const NavigationDrawerWidget(),
-            body: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
+              backgroundColor: MyColor().myGrey,
+              key: drawerScaffoldKey,
+              drawer: const NavigationDrawerWidget(),
+              body: Stack(
+                children: <Widget>[
+                  Divider(
+                    height: 1,
+                    color: MyColor().myOrange,
+                    thickness: 1,
+                  ),
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ],
+              )),
         ),
       );
     }
@@ -277,7 +295,9 @@ class CompressorPageState extends State<CompressorPage> {
       SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Column(children: widgetCompressor),
+            Column(
+              children: widgetCompressor,
+            ),
             const Padding(
               padding: EdgeInsets.only(top: 40, bottom: 40),
             ),
@@ -299,12 +319,21 @@ class CompressorPageState extends State<CompressorPage> {
                   width: 150.0,
                   height: 50.0,
                   child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          MyColor().backgroundCards),
+                      side: MaterialStateProperty.all<BorderSide>(
+                          BorderSide(color: MyColor().myOrange, width: 1)),
+                    ),
                     onPressed: () async {
                       LoadingOverlay.of(context).show();
                       await setAllMics(_mics);
                       LoadingOverlay.of(context).hide();
                     },
-                    child: const Text("Save changes"),
+                    child: Text(
+                      "Save changes",
+                      style: TextStyle(color: MyColor().myWhite),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),

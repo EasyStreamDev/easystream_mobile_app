@@ -51,35 +51,44 @@ class LoginPageState extends State<LoginPage> {
         return false;
       },
       child: Scaffold(
-        backgroundColor: MyColor().myGrey,
+        backgroundColor: MyColor().backgroundApp,
         appBar: AppBar(
-          title: const Text("Login Page"),
+          elevation: 0,
+          backgroundColor: MyColor().backgroundAppBar,
+          title: Text(
+            "Login Page",
+            style: TextStyle(color: MyColor().myWhite),
+          ),
           automaticallyImplyLeading: false,
           leading: IconButton(
+            icon: const Icon(Icons.qr_code_2),
+            color: MyColor().myWhite,
             onPressed: () async {
-              String result = await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const QrCode()));
+              String result = await Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const QrCode()));
               if (result == "connected") {
                 buildShowDialogConnected("You are now connected to obs");
               }
             },
-            icon: const Icon(Icons.qr_code_2),
           ),
         ),
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
+              Divider(
+                height: 1,
+                color: MyColor().myOrange,
+                thickness: 1,
+              ),
               buildLogo(),
               buildIpAddress(),
               buildEmail(),
               buildPassword(),
-              buildForgotPassword(),
+              // buildForgotPassword(),
+              const SizedBox(height: 50),
               buildLogin(),
-              const SizedBox(
-                height: 100,
-              ),
-              buildNewUser(),
+              const SizedBox(height: 100),
+              // buildNewUser(),
             ],
           ),
         ),
@@ -94,12 +103,14 @@ class LoginPageState extends State<LoginPage> {
           child: GestureDetector(
             child: Container(
               decoration: BoxDecoration(
-                  color: MyColor().myOrange,
-                  borderRadius: BorderRadius.circular(10)),
+                color: MyColor().backgroundCards,
+                borderRadius: BorderRadius.circular(10),
+                // border: Border.all(color: MyColor().myOrange),
+              ),
               width: 200,
               height: 100,
               child: Image.asset(
-                'assets/images/logo_easystream_orange.png',
+                'assets/images/logo_easystream_transparent.png',
               ),
             ),
             onDoubleTap: () {
@@ -126,11 +137,13 @@ class LoginPageState extends State<LoginPage> {
             controller: input,
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
+              filled: true,
+              fillColor: MyColor().backgroundCards,
               border: OutlineInputBorder(
                 borderSide: BorderSide(color: MyColor().myOrange),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(width: 2, color: MyColor().myOrange),
+                borderSide: BorderSide(width: 1, color: MyColor().myOrange),
               ),
               labelText: 'IP Address',
               labelStyle: const TextStyle(color: Colors.white),
@@ -151,11 +164,13 @@ class LoginPageState extends State<LoginPage> {
         child: TextField(
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
+            filled: true,
+            fillColor: MyColor().backgroundCards,
             border: OutlineInputBorder(
               borderSide: BorderSide(color: MyColor().myOrange),
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 2, color: MyColor().myOrange),
+              borderSide: BorderSide(width: 1, color: MyColor().myOrange),
             ),
             labelText: 'Email',
             labelStyle: const TextStyle(color: Colors.white),
@@ -176,11 +191,13 @@ class LoginPageState extends State<LoginPage> {
           style: const TextStyle(color: Colors.white),
           obscureText: true,
           decoration: InputDecoration(
+            filled: true,
+            fillColor: MyColor().backgroundCards,
             border: OutlineInputBorder(
               borderSide: BorderSide(color: MyColor().myOrange),
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 2, color: MyColor().myOrange),
+              borderSide: BorderSide(width: 1, color: MyColor().myOrange),
             ),
             labelText: 'Password',
             labelStyle: const TextStyle(color: Colors.white),
@@ -211,6 +228,17 @@ class LoginPageState extends State<LoginPage> {
         decoration: BoxDecoration(
             color: MyColor().myOrange, borderRadius: BorderRadius.circular(20)),
         child: TextButton(
+          child: const Text(
+            'Login',
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all<Color>(MyColor().backgroundCards),
+            side: MaterialStateProperty.all<BorderSide>(
+              BorderSide(color: MyColor().myOrange, width: 1),
+            ),
+          ),
           onPressed: () async {
             LoadingOverlay.of(context).show();
             _clientLogin = await login(email, password);
@@ -236,10 +264,6 @@ class LoginPageState extends State<LoginPage> {
               buildShowDialogError("Email or Password incorrect");
             }
           },
-          child: const Text(
-            'Login',
-            style: TextStyle(color: Colors.white, fontSize: 25),
-          ),
         ),
       );
 

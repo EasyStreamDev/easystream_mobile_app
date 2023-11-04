@@ -15,14 +15,14 @@ List<String> micNameList = List.empty();
 bool isLoading = true;
 
 Future<void> getAllTextFields() async {
-  Map<String, dynamic> msg = {"command": "getAllTextFields"};
+  Map<String, dynamic> msg = {"command": "/text-fields/get"};
 
   tcpClient.sendMessage(msg);
   await Future.delayed(const Duration(seconds: 2));
 }
 
 Future<void> getAllMics() async {
-  Map<String, dynamic> msg = {"command": "getAllMics"};
+  Map<String, dynamic> msg = {"command": "/microphones/get"};
 
   tcpClient.sendMessage(msg);
   await Future.delayed(const Duration(seconds: 2));
@@ -31,7 +31,7 @@ Future<void> getAllMics() async {
 Future<void> setSubtitles(
     String textFieldsUuid, int lenghtMicsArray, List<String> linkedMics) async {
   Map<String, dynamic> msg = {
-    "command": "setSubtitles",
+    "command": "/subtitles/set",
     "params": {
       "uuid": textFieldsUuid,
       "length": lenghtMicsArray,

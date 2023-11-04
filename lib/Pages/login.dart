@@ -9,7 +9,7 @@ import 'package:eip_test/Tools/globals.dart' as globals;
 
 Future<void> subscribeBroadcast() async {
   Map<String, dynamic> msg = {
-    "command": "subscribeBroadcast",
+    "command": "/broadcast/subscribe",
     "params": {
       "enable": true,
     }

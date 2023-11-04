@@ -21,7 +21,7 @@ int nbrActionReaction = 0;
 bool isLoading = true;
 
 Future<void> getActReactCouples() async {
-  Map<String, dynamic> msg = {"command": "getActReactCouples"};
+  Map<String, dynamic> msg = {"command": "/areas/get"};
 
   tcpClient.sendMessage(msg);
   await Future.delayed(const Duration(seconds: 2));

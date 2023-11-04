@@ -13,7 +13,7 @@ List<String> textFieldsNameList = List.empty();
 List<List<String>> linkedMicsList = [];
 
 Future<void> getAllSubtitlesSettings() async {
-  Map<String, dynamic> msg = {"command": "getSubtitlesSettings"};
+  Map<String, dynamic> msg = {"command": "/subtitles/get"};
 
   tcpClient.sendMessage(msg);
   await Future.delayed(const Duration(seconds: 2));

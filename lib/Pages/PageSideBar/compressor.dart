@@ -16,7 +16,7 @@ bool isLoading = true;
 
 Future<void> getAllMics() async {
   tcpClient.messages.clear();
-  Map<String, dynamic> msg = {"command": "getAllMics"};
+  Map<String, dynamic> msg = {"command": "/microphones/get"};
 
   tcpClient.sendMessage(msg);
   await Future.delayed(const Duration(seconds: 2));
@@ -25,7 +25,7 @@ Future<void> getAllMics() async {
 Future<void> setAllMics(List<dynamic> _mics) async {
   for (int i = 0; i < _mics.length; i++) {
     Map<String, dynamic> msg = {
-      "command": "setCompressorLevel",
+      "command": "/microphones/auto-leveler/set",
       "params": {
         "isActive": micClickList[i],
         "level": micLevelList[i],

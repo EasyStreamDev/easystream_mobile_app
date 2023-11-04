@@ -8,7 +8,7 @@ import 'package:eip_test/Tools/globals.dart' as globals;
 Future<void> setActionReactionSceneSwitch(List<String> actionParams,
     String reactionName, String reactionScene) async {
   Map<String, dynamic> msg = {
-    "command": "setActionReaction",
+    "command": "/areas/create",
     "params": {
       "action": {
         "type": "WORD_DETECT",
@@ -34,7 +34,7 @@ Future<void> setActionReactionToggleAudioCompressor(
     String reactionAudioSourceIdentifier,
     bool reactionToggle) async {
   Map<String, dynamic> msg = {
-    "command": "setActionReaction",
+    "command": "/areas/create",
     "params": {
       "action": {
         "type": "WORD_DETECT",
@@ -60,7 +60,7 @@ Future<void> setActionReactionToggleAudioCompressor(
 Future<void> setActionReactionStartRec(
     List<String> actionParams, String reactionName, int reactionDelay) async {
   Map<String, dynamic> msg = {
-    "command": "setActionReaction",
+    "command": "/areas/create",
     "params": {
       "action": {
         "type": "WORD_DETECT",
@@ -83,7 +83,7 @@ Future<void> setActionReactionStartRec(
 Future<void> setActionReactionStopRec(
     List<String> actionParams, String reactionName, int reactionDelay) async {
   Map<String, dynamic> msg = {
-    "command": "setActionReaction",
+    "command": "/areas/create",
     "params": {
       "action": {
         "type": "WORD_DETECT",
@@ -106,7 +106,7 @@ Future<void> setActionReactionStopRec(
 Future<void> setActionReactionStartStream(
     List<String> actionParams, String reactionName, int reactionDelay) async {
   Map<String, dynamic> msg = {
-    "command": "setActionReaction",
+    "command": "/areas/create",
     "params": {
       "action": {
         "type": "WORD_DETECT",
@@ -129,7 +129,7 @@ Future<void> setActionReactionStartStream(
 Future<void> setActionReactionStopStream(
     List<String> actionParams, String reactionName, int reactionDelay) async {
   Map<String, dynamic> msg = {
-    "command": "setActionReaction",
+    "command": "/areas/create",
     "params": {
       "action": {
         "type": "WORD_DETECT",

@@ -27,23 +27,24 @@ class HomePageState extends State<HomePage> {
           key: drawerScaffoldKey,
           drawer: const NavigationDrawerWidget(),
           body: SingleChildScrollView(
-              child: Column(
-            children: <Widget>[
-              Divider(
-                height: 1,
-                color: MyColor().myOrange,
-                thickness: 1,
-              ),
-              buildLogo(),
-              buildCompressorButton(),
-              const SizedBox(height: 12),
-              buildActionReactionButton(),
-              const SizedBox(height: 12),
-              buildSubtitleButton(),
-              const SizedBox(height: 12),
-              buildVideoSourceButton(),
-            ],
-          )),
+            child: Column(
+              children: <Widget>[
+                Divider(
+                  height: 1,
+                  color: MyColor().myOrange,
+                  thickness: 1,
+                ),
+                buildLogo(),
+                buildCompressorButton(),
+                const SizedBox(height: 12),
+                buildActionReactionButton(),
+                const SizedBox(height: 12),
+                buildSubtitleButton(),
+                const SizedBox(height: 12),
+                buildVideoSourceButton(),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -55,10 +56,10 @@ class HomePageState extends State<HomePage> {
         child: Center(
           child: Container(
             decoration: BoxDecoration(
-                color: MyColor().backgroundCards,
-                borderRadius: BorderRadius.circular(10),
-                // border: Border.all(color: MyColor().myOrange),
-              ),
+              color: MyColor().backgroundCards,
+              borderRadius: BorderRadius.circular(10),
+              // border: Border.all(color: MyColor().myOrange),
+            ),
             width: 200,
             height: 100,
             child: Image.asset(
@@ -73,7 +74,7 @@ class HomePageState extends State<HomePage> {
         width: 200.0,
         height: 100.0,
         child: ElevatedButton.icon(
-          icon : Icon(
+          icon: Icon(
             Icons.mic,
             color: MyColor().myWhite,
           ),
@@ -96,7 +97,7 @@ class HomePageState extends State<HomePage> {
         width: 200.0,
         height: 100.0,
         child: ElevatedButton.icon(
-          icon : Icon(
+          icon: Icon(
             Icons.add_reaction,
             color: MyColor().myWhite,
           ),
@@ -119,7 +120,7 @@ class HomePageState extends State<HomePage> {
         width: 200.0,
         height: 100.0,
         child: ElevatedButton.icon(
-          icon : Icon(
+          icon: Icon(
             Icons.subtitles,
             color: MyColor().myWhite,
           ),
@@ -142,7 +143,7 @@ class HomePageState extends State<HomePage> {
         width: 200.0,
         height: 100.0,
         child: ElevatedButton.icon(
-          icon : Icon(
+          icon: Icon(
             Icons.video_camera_front_outlined,
             color: MyColor().myWhite,
           ),

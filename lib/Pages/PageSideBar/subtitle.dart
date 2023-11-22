@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:eip_test/Elements/AppBar/app_bar.dart';
 import 'package:eip_test/Elements/LoadingOverlay/loading_overlay.dart';
 import 'package:eip_test/Elements/SideBar/navigation_drawer.dart';
@@ -11,6 +10,8 @@ import 'package:flutter/material.dart';
 List<String> textFieldsUuidList = List.empty();
 List<String> textFieldsNameList = List.empty();
 List<List<String>> linkedMicsList = [];
+
+bool isLoading = true;
 
 Future<void> getAllSubtitlesSettings() async {
   Map<String, dynamic> msg = {"command": "/subtitles/get"};
@@ -288,7 +289,7 @@ class SubtitlePageState extends State<SubtitlePage> {
         text: TextSpan(
           children: [
             const TextSpan(
-              text: 'uuid : ',
+              text: 'Uuid : ',
             ),
             TextSpan(
               text: textFieldsUuidList[index],
@@ -307,7 +308,7 @@ class SubtitlePageState extends State<SubtitlePage> {
         text: TextSpan(
           children: [
             const TextSpan(
-              text: 'linked_mics : ',
+              text: 'Linked Mics : ',
             ),
             for (int i = 0; i < linkedMicsList[index].length; i++)
               TextSpan(
@@ -325,10 +326,8 @@ class SubtitlePageState extends State<SubtitlePage> {
   /// Widget subtitle floating action button FloatingActionButton
   Widget buildFloatingActionButton() => Container(
         decoration: BoxDecoration(
-          border: Border.all(
-              color: MyColor().myOrange, width: 1.0), // Set border color and width
-          borderRadius: BorderRadius.circular(
-              30), // Optional: Set border radius for rounded corners
+          border: Border.all(color: MyColor().myOrange, width: 1.0),
+          borderRadius: BorderRadius.circular(30),
         ),
         child: FloatingActionButton(
           backgroundColor: MyColor().backgroundCards,

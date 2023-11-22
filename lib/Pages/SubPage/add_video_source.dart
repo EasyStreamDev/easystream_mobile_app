@@ -1,25 +1,18 @@
 import 'package:eip_test/Elements/LoadingOverlay/loading_overlay.dart';
 import 'package:eip_test/Elements/SideBar/navigation_drawer.dart';
-import 'package:eip_test/Pages/PageSideBar/subtitle.dart';
+import 'package:eip_test/Pages/PageSideBar/video_source.dart';
 import 'package:eip_test/Styles/color.dart';
 import 'package:eip_test/main.dart';
 import 'package:flutter/material.dart';
-import 'package:eip_test/Tools/globals.dart' as globals;
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 
 List<String> micNameList = List.empty();
-List<String> textFieldsNameList = List.empty();
-List<String> textFieldsUuidList = List.empty();
+List<String> micUuidList = List.empty();
+List<String> videoSourceNameList = List.empty();
+List<String> videoSourceUuidList = List.empty();
 
 bool isLoading = true;
-
-Future<void> getAllTextFields() async {
-  Map<String, dynamic> msg = {"command": "/text-fields/get"};
-
-  tcpClient.sendMessage(msg);
-  await Future.delayed(const Duration(seconds: 2));
-}
 
 Future<void> getAllMics() async {
   Map<String, dynamic> msg = {"command": "/microphones/get"};
@@ -28,54 +21,23 @@ Future<void> getAllMics() async {
   await Future.delayed(const Duration(seconds: 2));
 }
 
-Future<void> setSubtitles(
-    String textFieldsUuid, int lenghtMicsArray, List<String> linkedMics) async {
+Future<void> getAllVideoSource() async {
+  Map<String, dynamic> msg = {"command": "/display-sources/get"};
+
+  tcpClient.sendMessage(msg);
+  await Future.delayed(const Duration(seconds: 2));
+}
+
+Future<void> setVideoSource(
+    String micUuid, List<String> videoSourceUuidList) async {
   Map<String, dynamic> msg = {
-    "command": "/subtitles/set",
-    "params": {
-      "uuid": textFieldsUuid,
-      "length": lenghtMicsArray,
-      "linked_mics": linkedMics,
-    },
+    "command": "/mtdsis/create",
+    "params": {"mic_id": micUuid, "display_sources_ids": videoSourceUuidList},
   };
   tcpClient.sendMessage(msg);
   await Future.delayed(const Duration(seconds: 2));
   if (tcpClient.messages.isNotEmpty) {
     tcpClient.messages.clear();
-  }
-}
-
-List<dynamic> getTextFields() {
-  if (tcpClient.messages.isEmpty) {
-    debugPrint("There has been an error: tcp is empty");
-    return ([]);
-  } else {
-    var tmp = tcpClient.messages;
-    if (tmp.isEmpty) {
-      debugPrint("There has been an error: tmp is empty");
-      return ([]);
-    }
-    var requestResult = tmp[0];
-    if (tmp[0]["data"] == null) {
-      debugPrint("There has been an error: couldn't get the last data");
-      requestResult = tmp[1];
-    }
-    tcpClient.pop_front();
-    if (requestResult["data"] == null) {
-      debugPrint("There has been an error: requestResult is empty");
-      return ([]);
-    }
-    if (requestResult["data"]["text_fields"] == null) {
-      return ([]);
-    }
-    List<dynamic> textFields = requestResult["data"]["text_fields"];
-    textFieldsNameList = List.generate(textFields.length, (index) => "");
-    textFieldsUuidList = List.generate(textFields.length, (index) => "");
-    for (int i = 0; i < textFields.length; i++) {
-      textFieldsNameList[i] = textFields[i]["name"];
-      textFieldsUuidList[i] = textFields[i]["uuid"];
-    }
-    return (textFields);
   }
 }
 
@@ -103,55 +65,81 @@ List<dynamic> getMics() {
       return ([]);
     }
     List<dynamic> mics = requestResult["data"]["mics"];
-    micNameList = List.generate(requestResult.length - 1, (index) => "null");
+    micNameList = List.generate(requestResult.length, (index) => "");
+    micUuidList = List.generate(requestResult.length, (index) => "");
     for (int i = 0; i < mics.length; i++) {
       micNameList[i] = mics[i]["micName"];
+      micUuidList[i] = mics[i]["uuid"];
     }
+    debugPrint("mics : " + mics.toString());
     return (mics);
   }
 }
 
-class AddSubtitlePage extends StatefulWidget {
-  const AddSubtitlePage({Key? key}) : super(key: key);
-
-  @override
-  State<AddSubtitlePage> createState() => AddSubtitlePageState();
+List<dynamic> getVideoSource() {
+  if (tcpClient.messages.isEmpty) {
+    debugPrint("There has been an error: tcp is empty");
+    return ([]);
+  } else {
+    var tmp = tcpClient.messages;
+    if (tmp.isEmpty) {
+      debugPrint("There has been an error: tmp is empty");
+      return ([]);
+    }
+    var requestResult = tmp[0];
+    if (tmp[0]["data"] == null) {
+      debugPrint("There has been an error: couldn't get the last data");
+      requestResult = tmp[1];
+    }
+    tcpClient.pop_front();
+    if (requestResult["data"] == null) {
+      debugPrint("There has been an error: requestResult is empty");
+      return ([]);
+    }
+    if (requestResult["data"]["display_sources"] == null) {
+      return ([]);
+    }
+    List<dynamic> videoSource = requestResult["data"]["display_sources"];
+    videoSourceNameList = List.generate(videoSource.length, (index) => "");
+    videoSourceUuidList = List.generate(videoSource.length, (index) => "");
+    for (int i = 0; i < videoSource.length; i++) {
+      videoSourceNameList[i] = videoSource[i]["name"];
+      videoSourceUuidList[i] = videoSource[i]["uuid"];
+    }
+    debugPrint("video Source : " + videoSource.toString());
+    return (videoSource);
+  }
 }
 
-class AddSubtitlePageState extends State<AddSubtitlePage> {
-  final GlobalKey<ScaffoldState> drawerScaffoldKey = GlobalKey<ScaffoldState>();
-  List<dynamic> _textFields = [];
-  List<dynamic> _mics = [];
+class AddVideoSourcePage extends StatefulWidget {
+  const AddVideoSourcePage({Key? key}) : super(key: key);
 
-  String dropdownTextFields = "";
-  List<String> tmpNameTextFields = [];
+  @override
+  State<AddVideoSourcePage> createState() => AddVideoSourcePageState();
+}
+
+class AddVideoSourcePageState extends State<AddVideoSourcePage> {
+  final GlobalKey<ScaffoldState> drawerScaffoldKey = GlobalKey<ScaffoldState>();
+  List<dynamic> _mics = [];
+  List<dynamic> _videoSource = [];
+
+  String dropdownVideoSource = "";
+  List<String> tmpNameVideoSource = [];
   String dropdownMics = "";
   List<String> tmpNameMics = [];
 
-  List<String> micNameListToSend = [];
+  String micNameToSend = "";
+  String micUuidToSend = "";
+  List<String> videoSourceNameListToSend = [];
+  List<String> videoSourceUuidListToSend = [];
 
   @override
   void initState() {
     super.initState();
 
     isLoading = true;
-    _getDataTextFields();
     _getDataMics();
-  }
-
-  _getDataTextFields() async {
-    await getAllTextFields();
-    if (mounted) {
-      setState(
-        () => _textFields = getTextFields(),
-      );
-      if (_textFields.isNotEmpty) {
-        dropdownTextFields = textFieldsNameList[0];
-        for (int i = 0; i < textFieldsNameList.length; i++) {
-          tmpNameTextFields.add(textFieldsNameList[i]);
-        }
-      }
-    }
+    _getDataVideoSource();
   }
 
   _getDataMics() async {
@@ -167,13 +155,28 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
           tmpNameMics.add(micNameList[i]);
         }
       }
+    }
+  }
+
+  _getDataVideoSource() async {
+    await getAllVideoSource();
+    if (mounted) {
+      setState(
+        () => _videoSource = getVideoSource(),
+      );
+      if (_videoSource.isNotEmpty) {
+        dropdownVideoSource = videoSourceNameList[0];
+        for (int i = 0; i < videoSourceNameList.length; i++) {
+          tmpNameVideoSource.add(videoSourceNameList[i]);
+        }
+      }
       isLoading = false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_textFields.isNotEmpty && !isLoading) {
+    if (_videoSource.isNotEmpty && !isLoading) {
       // After loading with data
       return WillPopScope(
         onWillPop: () async {
@@ -184,7 +187,7 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
           appBar: AppBar(
             elevation: 0,
             backgroundColor: MyColor().backgroundAppBar,
-            title: Text("Add Subtitle",
+            title: Text("Add Video Source",
                 style: TextStyle(color: MyColor().myWhite)),
             leading: IconButton(
               onPressed: () {
@@ -196,29 +199,34 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
               ),
             ),
           ),
-          body: Column(
-            children: <Widget>[
-              Divider(
-                height: 1,
-                color: MyColor().myOrange,
-                thickness: 1,
-              ),
-              const SizedBox(
-                height: 150,
-              ),
-              buildSelectTextFieldsTitle(),
-              buildSelectTextFields(),
-              const SizedBox(
-                height: 50,
-              ),
-              // buildSelectMicsTitle(),
-              buildSelectMics(),
-            ],
+          body: Scaffold(
+            backgroundColor: MyColor().myGrey,
+            key: drawerScaffoldKey,
+            drawer: const NavigationDrawerWidget(),
+            body: Column(
+              children: <Widget>[
+                Divider(
+                  height: 1,
+                  color: MyColor().myOrange,
+                  thickness: 1,
+                ),
+                const SizedBox(
+                  height: 150,
+                ),
+                buildSelectMicsTitle(),
+                buildSelectMics(),
+                const SizedBox(
+                  height: 50,
+                ),
+                // buildSelectVideoSourceTitle(),
+                buildSelectVideoSource(),
+              ],
+            ),
           ),
           floatingActionButton: buildFloatingSubtitle(),
         ),
       );
-    } else if (_textFields.isEmpty && !isLoading) {
+    } else if (_videoSource.isEmpty && !isLoading) {
       // After loading without data
       return WillPopScope(
         onWillPop: () async {
@@ -228,7 +236,7 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
           appBar: AppBar(
             elevation: 0,
             backgroundColor: MyColor().backgroundAppBar,
-            title: Text("Add Subtitle",
+            title: Text("Add Video Source",
                 style: TextStyle(color: MyColor().myWhite)),
             leading: IconButton(
               onPressed: () {
@@ -253,7 +261,7 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
                 ),
                 const Center(
                   child: Text(
-                    "No Subtitle to load",
+                    "No Video Source to load",
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
@@ -273,7 +281,7 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
           appBar: AppBar(
             elevation: 0,
             backgroundColor: MyColor().backgroundAppBar,
-            title: Text("Add Subtitle",
+            title: Text("Add Video Source",
                 style: TextStyle(color: MyColor().myWhite)),
             leading: IconButton(
               onPressed: () {
@@ -307,8 +315,8 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
     }
   }
 
-  /// Widget select text fields title Row
-  Widget buildSelectTextFieldsTitle() => const Row(
+  /// Widget select mics title Row
+  Widget buildSelectMicsTitle() => const Row(
         children: [
           SizedBox(
             width: 20,
@@ -316,15 +324,15 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Select a Text Field :",
+              "Select a Mic",
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
         ],
       );
 
-  /// Widget select text fields Row
-  Widget buildSelectTextFields() => Row(
+  /// Widget select mics fields Row
+  Widget buildSelectMics() => Row(
         children: [
           const SizedBox(
             width: 20,
@@ -337,10 +345,10 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
                 color: MyColor().myOrange,
               ),
               dropdownColor: MyColor().myGrey,
-              value: dropdownTextFields,
+              value: dropdownMics,
               icon: const Icon(Icons.keyboard_arrow_down),
               iconEnabledColor: MyColor().myOrange,
-              items: tmpNameTextFields.map(
+              items: tmpNameMics.map(
                 (items) {
                   return DropdownMenuItem(
                     value: items,
@@ -355,11 +363,12 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
                 if (mounted) {
                   setState(
                     () {
-                      dropdownTextFields = selectedValue!;
-                      tmpNameTextFields.remove(
+                      dropdownMics = selectedValue!;
+                      micNameToSend = selectedValue;
+                      tmpNameMics.remove(
                         selectedValue.toString(),
                       );
-                      tmpNameTextFields.insert(
+                      tmpNameMics.insert(
                         0,
                         selectedValue.toString(),
                       );
@@ -372,8 +381,8 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
         ],
       );
 
-  /// Widget select mics title Row
-  Widget buildSelectMicsTitle() => const Row(
+  /// Widget select video source title Row
+  Widget buildSelectVideoSourceTitle() => const Row(
         children: [
           SizedBox(
             width: 20,
@@ -381,15 +390,15 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Select a Mic :",
+              "Select a Video Source :",
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
         ],
       );
 
-  /// Widget select mics Row
-  Widget buildSelectMics() => Row(
+  /// Widget select Video source Row
+  Widget buildSelectVideoSource() => Row(
         children: [
           const SizedBox(
             width: 20,
@@ -406,33 +415,34 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
                 ),
               ),
               child: MultiSelectDialogField<String>(
-                items: micNameList
-                    .map((micNameList) =>
-                        MultiSelectItem(micNameList, micNameList))
+                items: videoSourceNameList
+                    .map((videoSourceNameList) => MultiSelectItem(
+                        videoSourceNameList, videoSourceNameList))
                     .toList(),
-                initialValue: micNameListToSend,
+                initialValue: videoSourceNameListToSend,
                 onConfirm: (values) {
                   if (mounted) {
                     setState(() {
-                      micNameListToSend = values;
+                      videoSourceNameListToSend = values;
                     });
                   }
                 },
                 // style
                 title: const Text(
-                  "Select a Mic",
+                  "Select a Video Source",
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
                 buttonText: const Text(
-                  "Select a Mic",
+                  "Select a Video Source",
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
-                buttonIcon: const Icon(
+                buttonIcon: Icon(
                   Icons.keyboard_arrow_down,
-                  color: Color(0xfff56f28),
+                  color: MyColor().myOrange,
                 ),
                 backgroundColor: MyColor().myGrey,
                 selectedColor: MyColor().myOrange,
+                separateSelectedItems: true,
                 selectedItemsTextStyle:
                     const TextStyle(color: Colors.white, fontSize: 16),
                 itemsTextStyle:
@@ -458,27 +468,42 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
             color: MyColor().myWhite,
           ),
           onPressed: () async {
-            globals.Subtitle subtitle = globals.Subtitle();
-            if (micNameListToSend.isNotEmpty && mounted) {
-              for (int i = 0; i < textFieldsNameList.length; i++) {
-                if (dropdownTextFields == textFieldsNameList[i]) {
-                  subtitle.uuid = textFieldsUuidList[i];
+            int x = 0;
+
+            if (micNameToSend.isNotEmpty && mounted) {
+              for (int i = 0; i < micNameList.length; i++) {
+                if (micNameList[i] == micNameToSend) {
+                  micUuidToSend = micUuidList[i];
                 }
               }
-              subtitle.length = micNameListToSend.length;
-              subtitle.linkedMics = micNameListToSend;
-              LoadingOverlay.of(context).show();
-              await setSubtitles(
-                  subtitle.uuid, subtitle.length, subtitle.linkedMics);
-              LoadingOverlay.of(context).hide();
-              Navigator.pop(context);
-              Navigator.pop(context);
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      const LoadingOverlay(child: SubtitlePage())));
-            } else {
-              buildShowDialogError("You have to select a mic");
             }
+            debugPrint("Mic name : " + micNameToSend.toString());
+            debugPrint("Mic uuid : " + micUuidToSend.toString());
+            videoSourceUuidListToSend =
+                List.generate(videoSourceUuidList.length, (index) => "");
+            if (videoSourceNameListToSend.isNotEmpty && mounted) {
+              for (int i = 0; i < videoSourceNameList.length; i++) {
+                for (int j = 0; j < videoSourceNameListToSend.length; j++) {
+                  if (videoSourceNameListToSend[j] == videoSourceNameList[i]) {
+                    videoSourceUuidListToSend[x] = videoSourceUuidList[i];
+                    x++;
+                  }
+                }
+              }
+            }
+            debugPrint(
+                "Video Source name : " + videoSourceNameListToSend.toString());
+            debugPrint(
+                "Video Source uuid : " + videoSourceUuidListToSend.toString());
+
+            LoadingOverlay.of(context).show();
+            await setVideoSource(micUuidToSend, videoSourceUuidListToSend);
+            LoadingOverlay.of(context).hide();
+            Navigator.pop(context);
+            Navigator.pop(context);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    const LoadingOverlay(child: VideoSource())));
           },
         ),
       );

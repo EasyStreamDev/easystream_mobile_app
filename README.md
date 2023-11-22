@@ -38,7 +38,8 @@ mobile-app/lib/
 |	├──PageSideBar/
 |	|	├──action_reaction.dart				# page Action & Reaction
 |	|	├──compressor.dart				# page Compressor
-|	|	└──subtitle.dart				# page Subtitle
+|	|	├──subtitle.dart				# page Subtitle
+|	|	└──video_source.dart				# page VideoSource
 |	├──SubPage/
 |	|	├──ActionPage/
 |	|	|	└──list_action.dart			# sub page List Action
@@ -46,7 +47,9 @@ mobile-app/lib/
 |	|	├──ReactionPage/
 |	|	|	└──add_reaction.dart			# sub page add reaction
 |	|	|	└──list_reaction.dart			# sub page list reaction
-|	|	└──add_subtitle.dart				# sub page add subtitle
+|	|	├──add_subtitle.dart				# sub page add subtitle
+|	|	├──add_video_source.dart			# sub page add video source
+|	|	└──qr_code.dart			                # sub page qr_code
 |	├──home.dart						# page Home
 |	└──login.dart						# page Login
 ├──Styles/
@@ -69,6 +72,9 @@ mobile-app/lib/
 
 ### Subtitle :
   - activate subtitles on a text field
+
+### Video Source :
+  - link a mic to multiple video sources
 
 ## Screenshots
 

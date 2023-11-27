@@ -79,15 +79,18 @@ mobile-app/lib/
 ## Screenshots
 
 ### Login and Home Page :
-![1 - Login Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/c408d9cb-b971-411f-a65b-ae8ed46a8e4c)
-![2 - Home Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/5a443532-30e7-479d-9e7e-58bd0873150a)
-![3 - Navigation side bar](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/6cd3d001-d31d-4f94-9522-fff12de7cd4d)
+<img src="https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/902d8d46-0fc3-4c0e-824d-b582f519e802" width="214" height="495">
+<img src="https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/ed0e7a62-1ebc-4c1e-9ff5-5f013fdab985" width="214" height="495">
+<img src="https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/397dd5b3-d2d0-4e09-a929-28795c97b7e0" width="214" height="495">
+
+### Navigation Bar
+<img src="https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/370f5d18-4475-4e07-aca5-65b8d42260a3" width="214" height="495">
 
 ### Compressor Page :
-![4 - Compressor Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/7b23c117-ca61-44b1-bee8-2e33c98961a9)
+<img src="https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/f37648d8-ca3f-466c-9fb9-99889f215e68" width="214" height="495">
 
 ### Action & Reaction Page :
-![5 0 0 - Action   Reaction Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/db9b029b-3156-4eb4-a4b9-1c68d592f7c8)
+<img src="https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/50cd655d-34ca-4f85-bbc7-134262cac6e9" width="214" height="495">
 
 ### Action & Reaction subPage :
 ![5 1 0- List of Reaction subPage](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/ec6006e6-09db-44e9-9362-19268eb1bd28)
@@ -96,7 +99,13 @@ mobile-app/lib/
 ![5 2 1 - WordDetection subPage](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/7f32cc99-fed1-43f2-acd5-8e6287b0d181)
 
 ### Subtitle Page :
-![6 0 - Subtitle Page](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/4608edb6-0c34-4d35-b319-f7a64055bb55)
+<img src="https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/85686af8-7f3a-441c-92ab-f7b1fc1d274a" width="214" height="495">
 
 ### Subtitle subPage :
-![6 1 - Subtitle subPage](https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/3a76c7b6-b2af-4e40-9b7c-fa1ff33663dc)
+<img src="https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/baa89d90-c185-48a4-a805-718cdf9c7c39" width="214" height="495">
+
+### Video Source Page :
+<img src="https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/ed67d1ae-01d0-4c0b-92e1-1a91ab754133" width="214" height="495">
+
+### Video Source subPage :
+<img src="https://github.com/EasyStreamDev/easystream_mobile_app/assets/70137982/da0e468d-d38f-4b9c-8655-82e0afedc063" width="214" height="495">

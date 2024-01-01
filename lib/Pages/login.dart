@@ -242,6 +242,9 @@ class LoginPageState extends State<LoginPage> {
           onPressed: () async {
             LoadingOverlay.of(context).show();
             _clientLogin = await login(email, password);
+            
+            globals.subscription = _clientLogin.subscription;
+            debugPrint("--------------- this is the global subscription : " + globals.subscription + " ---------------");
             if (_clientLogin != null) {
               await createTcpClient(globals.ipAddress).then((value) async {
                 if (value == true) {

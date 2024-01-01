@@ -29,13 +29,15 @@ Future<void> getAllMics() async {
 }
 
 Future<void> setSubtitles(
-    String textFieldsUuid, int lenghtMicsArray, List<String> linkedMics) async {
+    String textFieldsUuid, int lenghtMicsArray, List<String> linkedMics, String language) async {
+      debugPrint("------- language : " + language + " -------");
   Map<String, dynamic> msg = {
     "command": "/subtitles/set",
     "params": {
       "uuid": textFieldsUuid,
       "length": lenghtMicsArray,
       "linked_mics": linkedMics,
+      "language": language,
     },
   };
   tcpClient.sendMessage(msg);
@@ -127,6 +129,13 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
   List<String> tmpNameTextFields = [];
   String dropdownMics = "";
   List<String> tmpNameMics = [];
+  String dropdownLanguage = "fr";
+  List<String> tmpNameLanguage = [
+    "fr",
+    "es",
+    "en",
+    "de",
+  ];
 
   List<String> micNameListToSend = [];
 
@@ -137,6 +146,7 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
     isLoading = true;
     _getDataTextFields();
     _getDataMics();
+    _getDataLanguage();
   }
 
   _getDataTextFields() async {
@@ -168,6 +178,12 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
         }
       }
       isLoading = false;
+    }
+  }
+
+  _getDataLanguage() {
+    if (mounted) {
+      
     }
   }
 
@@ -213,6 +229,11 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
               ),
               // buildSelectMicsTitle(),
               buildSelectMics(),
+              const SizedBox(
+                height: 50,
+              ),
+              buildSelectLanguageTitle(),
+              buildSelectLanguage(),
             ],
           ),
           floatingActionButton: buildFloatingSubtitle(),
@@ -445,6 +466,71 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
         ],
       );
 
+  /// Widget select text fields title Row
+  Widget buildSelectLanguageTitle() => const Row(
+        children: [
+          SizedBox(
+            width: 20,
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Select a Language :",
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+        ],
+      );
+
+  /// Widget select text fields Row
+  Widget buildSelectLanguage() => Row(
+        children: [
+          const SizedBox(
+            width: 20,
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: DropdownButton(
+              underline: Container(
+                height: 2,
+                color: MyColor().myOrange,
+              ),
+              dropdownColor: MyColor().myGrey,
+              value: dropdownLanguage,
+              icon: const Icon(Icons.keyboard_arrow_down),
+              iconEnabledColor: MyColor().myOrange,
+              items: tmpNameLanguage.map(
+                (items) {
+                  return DropdownMenuItem(
+                    value: items,
+                    child: Text(
+                      items,
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  );
+                },
+              ).toList(),
+              onChanged: (String? selectedValue) {
+                if (mounted) {
+                  setState(
+                    () {
+                      dropdownLanguage = selectedValue!;
+                      tmpNameLanguage.remove(
+                        selectedValue.toString(),
+                      );
+                      tmpNameLanguage.insert(
+                        0,
+                        selectedValue.toString(),
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          )
+        ],
+      );
+
   /// Widget add subtitle floating action button FloatingActionButton
   Widget buildFloatingSubtitle() => Container(
         decoration: BoxDecoration(
@@ -467,9 +553,10 @@ class AddSubtitlePageState extends State<AddSubtitlePage> {
               }
               subtitle.length = micNameListToSend.length;
               subtitle.linkedMics = micNameListToSend;
+              subtitle.language = dropdownLanguage;
               LoadingOverlay.of(context).show();
               await setSubtitles(
-                  subtitle.uuid, subtitle.length, subtitle.linkedMics);
+                  subtitle.uuid, subtitle.length, subtitle.linkedMics, subtitle.language);
               LoadingOverlay.of(context).hide();
               Navigator.pop(context);
               Navigator.pop(context);

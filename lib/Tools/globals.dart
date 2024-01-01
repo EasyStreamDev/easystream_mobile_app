@@ -12,9 +12,11 @@ class Subtitle {
   late String uuid;
   late int length;
   late List<String> linkedMics;
+  late String language;
 }
 
 List<Subtitle> subtitlelist = [];
 
+String subscription = "";
 String ipAddress = "";
 bool isConnected = false;

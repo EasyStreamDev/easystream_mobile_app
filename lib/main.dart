@@ -22,7 +22,7 @@ Future<bool> createTcpClient(String ipAddress) async {
     });
   }
   // else {
-  //   await tcpClient.initialize("xxx.xxx.xxx.xxx", 47920).then((value) {
+  //   await tcpClient.initialize("192.168.1.123", 47920).then((value) {
   //     tcpClient.startClient();
   //     valueReturn = value;
   //   });
